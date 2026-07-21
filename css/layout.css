@@ -1,0 +1,315 @@
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 var(--space-margin-mobile);
+}
+
+.pagina {
+  padding-top: var(--space-lg);
+  padding-bottom: calc(72px + var(--space-xl)); /* espaço pro bottom-nav fixo */
+}
+
+.pagina.publica {
+  padding-top: 72px; /* Espaço para o nav-publico fixo */
+  padding-bottom: 0;
+}
+
+/* Reserva o espaço antes do partial carregar via fetch() — sem isso o
+   conteúdo "pula" pra cima por uma fração de segundo quando a nav injeta. */
+#app-bar:empty,
+#nav-publico:empty {
+  display: block;
+  min-height: 60px;
+}
+
+#bottom-nav:empty {
+  display: block;
+  min-height: 72px;
+}
+
+.secao {
+  margin-bottom: var(--space-xl);
+}
+
+.grid-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+}
+
+@media (min-width: 600px) {
+  .grid-cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* App bar (topo, autenticado) */
+.app-bar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-margin-mobile);
+  background: var(--surface);
+  border-bottom: 1px solid var(--outline-variant);
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.app-bar-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.app-bar-logo img {
+  width: 28px;
+  height: 28px;
+}
+
+.app-bar-acoes {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  position: relative;
+}
+
+.btn-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  border: none;
+  background: transparent;
+  color: var(--on-surface);
+  position: relative;
+}
+
+.btn-icone:hover {
+  background: var(--surface-container);
+}
+
+.btn-voltar {
+  margin-right: var(--space-sm);
+}
+
+.badge-notificacao {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--error);
+}
+
+/* Avatar (iniciais) + menu de perfil */
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: var(--secondary-container);
+  color: var(--on-secondary-container);
+  border: 2px solid var(--secondary-fixed, #dbe1ff);
+  font-size: var(--caption-size);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.menu-perfil {
+  position: absolute;
+  top: 48px;
+  right: 0;
+  width: 220px;
+  background: var(--surface-container-lowest);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-2);
+  padding: var(--space-md);
+  z-index: 60;
+}
+
+.menu-perfil hr {
+  border: none;
+  border-top: 1px solid var(--outline-variant);
+  margin: var(--space-sm) 0;
+}
+
+.menu-perfil-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  width: 100%;
+  padding: var(--space-sm) 0;
+  background: transparent;
+  border: none;
+  color: var(--on-surface);
+  font-size: var(--label-md-size);
+  font-weight: 500;
+  text-align: left;
+}
+
+/* Painel de notificações (dropdown) */
+.painel-notificacoes {
+  position: absolute;
+  top: 48px;
+  right: 0;
+  width: min(340px, 90vw);
+  background: var(--surface-container-lowest);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-2);
+  padding: var(--space-sm);
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.notificacao-item {
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-default);
+}
+
+.notificacao-item.nao-lida {
+  background: var(--surface-container-low);
+}
+
+.bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  z-index: 50;
+  background: var(--surface-container-lowest);
+  border-top: 1px solid var(--outline-variant);
+}
+
+.bottom-nav-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.bottom-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-width: 0; /* Permite que o item encolha abaixo do tamanho do texto */
+  gap: 2px;
+  padding: var(--space-xs) 0;
+  color: var(--on-surface-variant);
+  font-size: 10px; /* Reduzido levemente para caber os 5 itens em 360px */
+  border-radius: var(--radius-default);
+  text-align: center;
+}
+
+.bottom-nav-item span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  padding: 0 2px;
+}
+
+.bottom-nav-item svg {
+  flex-shrink: 0;
+}
+
+.bottom-nav-item.ativo {
+  color: var(--primary);
+}
+
+/* Nav pública (landing/auth) */
+.nav-publica {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-margin-mobile);
+  background: var(--surface);
+  border-bottom: 1px solid var(--outline-variant);
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.nav-publica-links {
+  display: flex;
+  gap: var(--space-md);
+  align-items: center;
+}
+
+/* Utilitários de espaçamento/flex usados nas páginas */
+.flex {
+  display: flex;
+}
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+.items-center {
+  align-items: center;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.gap-xs {
+  gap: var(--space-xs);
+}
+.gap-sm {
+  gap: var(--space-sm);
+}
+.gap-md {
+  gap: var(--space-md);
+}
+.gap-lg {
+  gap: var(--space-lg);
+}
+.gap-xl {
+  gap: var(--space-xl);
+}
+.mt-xs {
+  margin-top: var(--space-xs);
+}
+.mt-sm {
+  margin-top: var(--space-sm);
+}
+.mt-md {
+  margin-top: var(--space-md);
+}
+.mt-lg {
+  margin-top: var(--space-lg);
+}
+.mt-xl {
+  margin-top: var(--space-xl);
+}
+.mb-xs {
+  margin-bottom: var(--space-xs);
+}
+.mb-sm {
+  margin-bottom: var(--space-sm);
+}
+.mb-md {
+  margin-bottom: var(--space-md);
+}
+.mb-lg {
+  margin-bottom: var(--space-lg);
+}
+.mb-xl {
+  margin-bottom: var(--space-xl);
+}

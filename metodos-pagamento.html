@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Métodos de Pagamento — EnergyCalc</title>
+  <meta name="theme-color" content="#006b2c" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/componentes.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+</head>
+<body>
+  <div id="app-bar"></div>
+
+  <main class="pagina container">
+    <div class="mb-lg mt-lg flex items-center gap-sm">
+      <button class="btn-icone" onclick="window.location.href='perfil'" aria-label="Voltar" style="background: var(--surface-container); border-radius: 50%;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+      <h1 class="headline-md" style="font-weight: 700;">Métodos de Pagamento</h1>
+    </div>
+
+    <div class="card mb-lg">
+      <h2 class="headline-md mb-sm" style="font-size: 18px;">Cartão e cobrança</h2>
+      <p class="body-md texto-secundario mb-lg">Cartão salvo, troca de cartão e nota fiscal ficam num painel seguro da Stripe — não guardamos dado de cartão aqui.</p>
+      <button type="button" class="btn btn-primary btn-block" id="btn-portal-pagamento">Gerenciar método de pagamento</button>
+    </div>
+
+    <div class="card">
+      <h2 class="headline-md mb-lg" style="font-size: 18px;">Histórico de pagamentos</h2>
+      <div id="lista-pagamentos" class="flex-col gap-md">
+        <p class="caption texto-secundario">Carregando...</p>
+      </div>
+    </div>
+  </main>
+
+  <div id="bottom-nav"></div>
+  <div id="modal-upgrade-slot"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/paginas/metodos_pagamento.js"></script>
+  <script>
+    carregarLayoutAutenticado("perfil");
+    inicializarMetodosPagamento();
+  </script>
+</body>
+</html>

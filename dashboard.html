@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard — EnergyCalc</title>
+  <meta name="theme-color" content="#006b2c" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/componentes.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <style>
+    .chart-wrap { position: relative; height: 240px; }
+    .chart-wrap-donut { position: relative; height: 280px; display: flex; justify-content: center; }
+    
+    /* Grid customizada do topo do dashboard */
+    .dashboard-grid-topo {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-md);
+    }
+    @media (min-width: 360px) {
+      .dashboard-grid-topo {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (min-width: 600px) {
+      .dashboard-grid-topo {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+    
+    /* Modificadores de cards do dashboard */
+    .dashboard-grid-topo .card {
+      padding: var(--space-md);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    
+    .card-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--on-surface-variant);
+      margin-bottom: var(--space-sm);
+    }
+    
+    .card-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--on-surface);
+      line-height: 1.1;
+      margin-bottom: var(--space-xs);
+    }
+    
+    .card-value .unidade {
+      font-size: 16px;
+      color: var(--primary);
+    }
+    
+    .card-subtexto {
+      font-size: var(--caption-size);
+      color: var(--on-surface-variant);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    
+    .card-subtexto-italico {
+      font-size: 11px;
+      font-style: italic;
+      color: var(--on-surface-variant);
+    }
+    
+    .icone-tendencia {
+      width: 14px;
+      height: 14px;
+      color: var(--primary);
+    }
+    
+    .card-borda-azul {
+      border-left: 4px solid var(--secondary);
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+    }
+    
+    .card-fundo-verde {
+      background: var(--primary);
+      position: relative;
+    }
+    
+    .card-fundo-verde .card-title,
+    .card-fundo-verde .card-value {
+      color: var(--on-primary);
+    }
+    
+    .icone-porquinho {
+      position: absolute;
+      bottom: var(--space-md);
+      right: var(--space-md);
+      width: 28px;
+      height: 28px;
+      color: var(--on-primary);
+      opacity: 0.8;
+    }
+    
+    .barra-progresso {
+      width: 100%;
+      height: 8px;
+      background: var(--surface-container-high);
+      border-radius: var(--radius-full);
+      margin-top: 4px;
+      margin-bottom: var(--space-xs);
+      overflow: hidden;
+    }
+    
+    .barra-progresso-fill {
+      height: 100%;
+      background: var(--primary);
+      border-radius: var(--radius-full);
+    }
+    
+    .card-aparelhos-ativos {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-md) var(--space-lg) !important;
+    }
+    
+    .icone-caixa-azul {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      background: var(--surface-container);
+      color: var(--secondary);
+      border-radius: var(--radius-md);
+    }
+    
+    .icone-caixa-azul svg {
+      width: 24px;
+      height: 24px;
+    }
+    
+    .legenda-html {
+      display: flex;
+      gap: var(--space-md);
+      flex-wrap: wrap;
+    }
+    
+    .legenda-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: var(--caption-size);
+      color: var(--on-surface-variant);
+    }
+    
+    .bolinha {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    
+    .bg-primaria { background: var(--primary); }
+    .bg-secundaria { background: var(--secondary); }
+    
+    .legenda-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-sm) var(--space-md);
+    }
+    @media (min-width: 600px) {
+      .legenda-grid {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: var(--space-md);
+      }
+    }
+    
+    .ranking-item {
+      display: flex;
+      align-items: center;
+      padding: var(--space-md);
+      background: var(--surface-container-low);
+      border: none;
+      border-radius: var(--radius-lg);
+      gap: var(--space-md);
+    }
+    
+    .ranking-icone-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+    
+    .ranking-icone-alto { background: var(--error-container); color: var(--error); }
+    .ranking-icone-continuo { background: #ffebd6; color: #a36700; } /* tertiary container approx */
+    .ranking-icone-moderado { background: var(--surface-container-high); color: var(--secondary); }
+    
+    .ranking-detalhes {
+      flex: 1;
+    }
+    
+    .ranking-nome {
+      font-weight: 600;
+      font-size: var(--label-md-size);
+      color: var(--on-surface);
+      margin-bottom: 2px;
+    }
+    
+    .ranking-status {
+      font-size: 11px;
+      color: var(--on-surface-variant);
+    }
+    
+    .ranking-valores {
+      text-align: right;
+    }
+    
+    .ranking-kwh {
+      font-weight: 700;
+      font-size: var(--label-md-size);
+      margin-bottom: 2px;
+    }
+    
+    .ranking-kwh.alto { color: var(--error); }
+    .ranking-kwh.normal { color: var(--on-surface); }
+    
+    .insight-card {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-md);
+      background: var(--surface-container);
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+      color: var(--on-surface-variant);
+      font-size: var(--caption-size);
+      line-height: 1.5;
+    }
+    
+    .insight-card svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      color: var(--on-surface-variant);
+    }
+
+    .fab-button {
+      position: fixed;
+      bottom: calc(72px + var(--space-lg));
+      right: calc(50vw - 360px + var(--space-lg)); /* Ajuste de posição pro desktop */
+      width: 56px;
+      height: 56px;
+      background: var(--primary);
+      color: var(--on-primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-2);
+      border: none;
+      cursor: pointer;
+      z-index: 100;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    @media (max-width: 720px) {
+      .fab-button {
+        right: var(--space-lg);
+      }
+    }
+
+    .fab-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0px 12px 20px -5px rgba(0, 107, 44, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <div id="app-bar"></div>
+
+  <main class="pagina container">
+    <section class="secao">
+      <div class="dashboard-grid-topo">
+        <div class="card">
+          <div class="flex justify-between items-start">
+            <p class="card-title">Consumo Mensal</p>
+            <span id="badge-origem-mes" class="badge-status-analisada" style="display:none;"></span>
+          </div>
+          <p class="card-value" id="card-consumo-mensal">—</p>
+          <p class="card-subtexto" id="card-consumo-tendencia">
+            <svg class="icone-tendencia" id="icone-tendencia" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>
+            <span id="txt-tendencia">--%</span> vs mês anterior
+          </p>
+        </div>
+        <div class="card card-borda-azul">
+          <p class="card-title">Custo Est.</p>
+          <p class="card-value" id="card-valor-estimado">—</p>
+          <p class="card-subtexto-italico" id="linha-vencimento" style="display:none;">Vencimento: <span id="card-vencimento"></span></p>
+        </div>
+        <div class="card card-fundo-verde">
+          <p class="card-title">Potencial de Economia</p>
+          <p class="card-value" id="card-economia">—</p>
+          <svg class="icone-porquinho" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8 0 3 2 4.5V20h4v-2h3v2h4v-4c1-.5 1.7-1 2-2h2v-4h-2c0-1-.5-1.5-1-2h0V5z"/><path d="M2 9v1c0 1.1.9 2 2 2h1"/><path d="M16 11h.01"/></svg>
+        </div>
+        <div class="card">
+          <p class="card-title">Meta Mensal</p>
+          <div class="barra-progresso">
+            <div class="barra-progresso-fill" id="barra-meta-fill" style="width: 0%;"></div>
+          </div>
+          <p class="card-subtexto">
+            <span id="meta-usado">--%</span> usado <strong id="meta-total">-- kWh</strong>
+          </p>
+        </div>
+      </div>
+      
+      <div class="card card-aparelhos-ativos mt-md">
+        <div class="aparelhos-info">
+          <p class="card-title">Aparelhos Ativos</p>
+          <p class="card-value" id="card-aparelhos">—</p>
+        </div>
+        <div class="icone-caixa-azul">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m14 5-3 3 2 7 8-8-7-2Z"/><path d="m14 5-3 3-3-3 3-3 3 3Z"/><path d="M9.5 6.5 4 12l3 6"/><path d="M3 22v-2c0-1.1.9-2 2-2h4a2 2 0 0 1 2 2v2H3Z"/></svg>
+        </div>
+      </div>
+    </section>
+
+    <section class="secao card">
+      <div class="flex justify-between items-center mb-lg">
+        <h2 class="headline-md">Evolução<br>Mensal</h2>
+        <div class="legenda-html" id="legenda-evolucao">
+          <span class="legenda-item"><span class="bolinha bg-primaria"></span>Consumo</span>
+          <span class="legenda-item"><span class="bolinha bg-secundaria"></span>Média</span>
+        </div>
+      </div>
+      <div class="chart-wrap"><canvas id="grafico-evolucao"></canvas></div>
+      <p class="estado-vazio caption" id="vazio-evolucao" style="display:none;">Ainda sem histórico suficiente.</p>
+    </section>
+    
+    <section class="secao card">
+      <div class="flex justify-between items-center mb-lg">
+        <h2 class="headline-md">Por Categoria</h2>
+        <span class="badge-status-processamento">Estimado (aparelhos)</span>
+      </div>
+      <div class="chart-wrap-donut">
+        <canvas id="grafico-categoria"></canvas>
+      </div>
+      <div id="legenda-categoria-container" class="legenda-grid mt-lg"></div>
+      <p class="estado-vazio caption" id="vazio-categoria" style="display:none;">Cadastre aparelhos e uma tarifa pra ver esse gráfico.</p>
+    </section>
+
+    <section class="secao card">
+      <div class="flex justify-between items-center mb-lg">
+        <h2 class="headline-md">Ranking de Aparelhos</h2>
+        <span class="badge-status-processamento">Estimado (aparelhos)</span>
+      </div>
+      <div id="lista-ranking" class="flex-col gap-sm"></div>
+      <p class="estado-vazio caption" id="vazio-ranking" style="display:none;">Sem aparelhos com consumo calculado ainda.</p>
+    </section>
+
+    <section class="secao card">
+      <div class="flex justify-between items-center mb-lg">
+        <h2 class="headline-md">Gastos Mensais</h2>
+        <a href="historico.html" class="link-inline">Ver Histórico</a>
+      </div>
+      <div class="chart-wrap"><canvas id="grafico-gastos"></canvas></div>
+      <p class="estado-vazio caption" id="vazio-gastos" style="display:none;">Ainda sem histórico suficiente.</p>
+
+      <div class="insight-card mt-lg" id="insight-cobertura" style="display:none;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>
+        <p id="txt-insight-cobertura"></p>
+      </div>
+    </section>
+  </main>
+  
+  <button class="fab-button" onclick="window.location.href='novo_aparelho.html'" aria-label="Adicionar Aparelho">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+  </button>
+
+  <div id="bottom-nav"></div>
+  <div id="modal-upgrade-slot"></div>
+
+  <!-- Boas-vindas — só aparece pra quem ainda não tem nenhuma residência
+       cadastrada (ver verificarOnboarding() em dashboard.js); reaparece a
+       cada visita enquanto isso for verdade, já que "Agora não" só adia,
+       não resolve o problema de fundo (sem residência quase nada no app
+       funciona: aparelho, tarifa, meta... tudo depende de uma existir). -->
+  <div class="modal-overlay modal-hidden" id="modal-boas-vindas">
+    <div class="modal modal-confirmar">
+      <div class="modal-confirmar-icone icone-positivo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>
+      </div>
+      <h2 class="headline-md mb-sm">Bem-vindo ao EnergyCalc!</h2>
+      <p class="body-md texto-secundario mb-lg">Pra começar a acompanhar seu consumo de energia, siga estes passos:</p>
+      <ol class="lista-onboarding mb-lg">
+        <li><strong>Cadastre sua residência</strong> — o primeiro passo, sem ela o resto do app não funciona.</li>
+        <li><strong>Defina a tarifa de energia</strong> — pra calcularmos o custo certo (dá pra fazer na mesma tela).</li>
+        <li><strong>Cadastre seus aparelhos</strong> — aí seu consumo real começa a aparecer aqui no painel.</li>
+      </ol>
+      <a href="residencias" class="btn btn-primary btn-block mb-sm">Cadastrar minha residência</a>
+      <button type="button" class="btn btn-ghost btn-block" id="btn-boas-vindas-depois">Agora não</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/paginas/dashboard.js"></script>
+  <script>
+    carregarLayoutAutenticado("dashboard");
+    inicializarDashboard();
+  </script>
+</body>
+</html>

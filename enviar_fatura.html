@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Enviar Fatura — EnergyCalc</title>
+  <meta name="theme-color" content="#006b2c" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/componentes.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+</head>
+<body style="padding-bottom: 90px; background: var(--surface);">
+  <div id="app-bar"></div>
+
+  <main class="pagina container">
+    <div class="mb-lg mt-lg flex items-center gap-sm">
+      <button class="btn-icone" onclick="window.location.href='historico'" aria-label="Voltar" style="background: var(--surface-container); border-radius: 50%;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+      <h1 class="headline-md" style="font-weight: 700; font-size: 24px;">Enviar Fatura</h1>
+    </div>
+    
+    <!-- Selecione a concessionaria -->
+    <div class="mb-lg">
+      <p class="label-md mb-sm texto-secundario">Selecione sua Concessionária</p>
+      <div class="flex gap-md">
+        <div class="card-concessionaria ativo" id="btn-enel" onclick="selecionarConcessionaria('enel')">
+          <div class="card-concessionaria-icone">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><line x1="9" x2="9" y1="22" y2="22"/><line x1="15" x2="15" y1="22" y2="22"/><line x1="9" x2="9" y1="6" y2="6"/><line x1="15" x2="15" y1="6" y2="6"/><line x1="9" x2="9" y1="10" y2="10"/><line x1="15" x2="15" y1="10" y2="10"/><line x1="9" x2="9" y1="14" y2="14"/><line x1="15" x2="15" y1="14" y2="14"/></svg>
+          </div>
+          <span class="label-md" style="font-weight: 600;">Enel</span>
+        </div>
+        
+        <div class="card-concessionaria" id="btn-equatorial" onclick="selecionarConcessionaria('equatorial')">
+          <div class="card-concessionaria-icone">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>
+          </div>
+          <span class="label-md" style="font-weight: 600;">Equatorial</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Area de upload -->
+    <div class="upload-area mb-lg" id="upload-area" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);">
+      <div style="background: #e8f5e9; width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); margin: 0 auto var(--space-md);">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 13v8"/><path d="M12 13l-3 3"/><path d="M12 13l3 3"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/><path d="M16 16l-4-4-4 4"/></svg>
+      </div>
+      <h3 class="label-md" style="font-size: 16px; font-weight: 600;">Arraste sua fatura</h3>
+      <p class="caption texto-secundario mb-md" id="upload-texto">PDF ou imagem aqui</p>
+      
+      <input type="file" id="file-input" hidden accept=".pdf,image/*">
+      <button class="btn btn-primary" style="border-radius: var(--radius-full); padding: 10px 24px;" onclick="document.getElementById('file-input').click()">Selecionar Arquivo</button>
+    </div>
+
+    <!-- Vantagens do upload -->
+    <div class="card mb-lg">
+      <h3 class="label-md mb-md" style="font-weight: 700; font-size: 16px;">Vantagens do Upload</h3>
+      
+      <div class="vantagem-item">
+        <div class="vantagem-icone">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72Z"/><path d="m14 7 3 3"/><path d="M5 6v4"/><path d="M19 14v4"/><path d="M10 2v2"/><path d="M7 8H3"/><path d="M21 16h-4"/><path d="M11 3H9"/></svg>
+        </div>
+        <div>
+          <p class="label-md" style="font-weight: 600;">Leitura automática de consumo</p>
+          <p class="caption texto-secundario mt-xs">O navegador extrai dados do PDF usando PDF.js.</p>
+        </div>
+      </div>
+      
+      <div class="vantagem-item">
+        <div class="vantagem-icone">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>
+        </div>
+        <div>
+          <p class="label-md" style="font-weight: 600;">Histórico instantâneo</p>
+          <p class="caption texto-secundario mt-xs">Compare seus gastos com meses anteriores.</p>
+        </div>
+      </div>
+      
+      <div class="vantagem-item" style="margin-bottom: 0;">
+        <div class="vantagem-icone">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 12 6 6"/><path d="M12 12l6 6"/><circle cx="12" cy="12" r="2"/></svg>
+        </div>
+        <div>
+          <p class="label-md" style="font-weight: 600;">Metas personalizadas</p>
+          <p class="caption texto-secundario mt-xs">Receba dicas exclusivas para economizar mais.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Security Banner -->
+    <div class="banner-seguranca mb-xl" style="box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);">
+      <span class="label-md" style="color: white; font-weight: 600; text-shadow: 0 1px 4px rgba(0,0,0,0.8); position: relative; z-index: 2; font-size: 16px;">Sua conta segura e criptografada</span>
+    </div>
+
+    <div class="mb-xl pb-xl pt-sm" style="padding-top: 15px;">
+      <button class="btn btn-primary btn-block mb-xl" id="btn-analisar" style="padding: 16px; border-radius: var(--radius-full); font-size: 16px; font-weight: 700; box-shadow: 0 4px 12px rgba(0,107,44,0.3);">
+        Analisar Fatura
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 8px;"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/><path d="M14 14h2"/><path d="M14 17h2"/></svg>
+      </button>
+    </div>
+
+  </main>
+
+  <div id="bottom-nav"></div>
+  <div id="modal-upgrade-slot"></div>
+
+  <!-- Modal de progresso do envio — sem X e sem fechar ao clicar fora
+       (a ação não pode ser interrompida sem querer), só o botão Cancelar
+       explícito, que aborta a requisição de verdade via AbortController. -->
+  <div class="modal-overlay modal-hidden" id="modal-progresso-fatura">
+    <div class="modal modal-confirmar">
+      <div class="modal-progresso-icone" id="progresso-icone-carregando">
+        <span class="spinner spinner-grande"></span>
+      </div>
+      <div class="modal-progresso-icone modal-progresso-icone-sucesso" id="progresso-icone-sucesso" style="display:none;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
+      <h2 class="headline-md mb-sm" id="progresso-titulo">Enviando fatura</h2>
+      <p class="body-md texto-secundario mb-lg" id="progresso-etapa">Preparando arquivo...</p>
+      <button class="btn btn-ghost btn-block" id="btn-cancelar-envio-fatura" onclick="cancelarEnvioFatura()">Cancelar</button>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="https://unpkg.com/pdfjs-dist@3.11.122/build/pdf.min.js"></script>
+  <script src="js/paginas/enviar_fatura.js"></script>
+  <script>
+    carregarLayoutAutenticado("historico");
+    inicializarEnviarFatura();
+  </script>
+</body>
+</html>

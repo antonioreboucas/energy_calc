@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Verificar e-mail — EnergyCalc</title>
+  <meta name="theme-color" content="#006b2c" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/componentes.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+</head>
+<body>
+  <main class="tela-auth">
+    <div class="auth-cabecalho">
+      <img src="icons/icon-192.png" alt="" class="auth-logo" />
+      <h1 class="auth-titulo-app">EnergyCalc</h1>
+      <p class="auth-tagline">Fortalecendo seu futuro sustentável.</p>
+    </div>
+
+    <div class="card auth-card" style="text-align:center;">
+      <h2 class="headline-md mb-lg" id="ve-titulo">Verificando seu e-mail...</h2>
+      <p id="ve-mensagem" class="body-md">Aguarde um instante.</p>
+      <a href="dashboard" class="btn btn-primary btn-block mt-lg" id="ve-acao" style="display:none;">Ir para o painel</a>
+    </div>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/layout.js"></script>
+  <script>
+    (async function verificar() {
+      const token = new URLSearchParams(location.search).get("token");
+      const titulo = document.getElementById("ve-titulo");
+      const mensagem = document.getElementById("ve-mensagem");
+      const acao = document.getElementById("ve-acao");
+
+      if (!token) {
+        titulo.textContent = "Link inválido";
+        mensagem.textContent = "Nenhum token de verificação foi encontrado nesse link.";
+        return;
+      }
+
+      try {
+        await apiPost("/auth/verify-email", { token });
+        titulo.textContent = "E-mail verificado!";
+        mensagem.textContent = "Sua conta está confirmada.";
+        acao.style.display = "flex";
+        acao.href = estaLogado() ? "dashboard" : "login";
+      } catch (erro) {
+        titulo.textContent = "Não foi possível verificar";
+        mensagem.textContent = erro.message;
+      }
+    })();
+  </script>
+</body>
+</html>

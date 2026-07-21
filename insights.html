@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Insights de Consumo — EnergyCalc</title>
+  <meta name="theme-color" content="#006b2c" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/componentes.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <style>
+    .chart-wrap { position: relative; height: 180px; }
+  </style>
+</head>
+<body>
+  <div id="app-bar"></div>
+
+  <main class="pagina container">
+    <div class="mb-lg mt-lg">
+      <h1 class="headline-md">Insights de Consumo</h1>
+      <p class="caption texto-secundario mt-sm">Analise seus padrões e otimize sua pegada ecológica.</p>
+    </div>
+
+    <div id="banner-limite-free" class="card mb-lg" style="background: var(--surface-container-high); border: 1px solid var(--outline-variant); display: none;">
+      <div class="flex gap-sm">
+        <div style="color: var(--tertiary);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" /><path d="M12 9v4" /><path d="M12 17h.01" /></svg>
+        </div>
+        <div>
+          <h2 class="label-md" style="color: var(--tertiary);">Limite do Plano Grátis</h2>
+          <p class="caption mt-xs" style="color: var(--on-surface-variant);">Exibindo histórico dos últimos 30 dias. Faça upgrade para o Pro para arquivos de dados anuais.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-lg">
+      <div class="flex justify-between items-center mb-md">
+        <h2 class="label-md" style="font-size: 20px; font-weight: 700;">Histórico de Consumo</h2>
+        <div class="flex items-center gap-sm">
+          <div class="abas" style="margin-bottom: 0; border: none; background: var(--surface-container-low); border-radius: var(--radius-full); padding: 4px;">
+            <button class="aba ativa" style="padding: 4px 12px; border-radius: var(--radius-full); font-size: 12px; border: none; background: var(--surface-container-lowest); color: var(--primary); font-weight: 700; box-shadow: var(--shadow-1);">Mensal</button>
+            <button class="aba" style="padding: 4px 12px; border-radius: var(--radius-full); font-size: 12px; border: none;">Anual</button>
+          </div>
+          <button class="btn-icone" style="width: 32px; height: 32px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" /></svg>
+          </button>
+        </div>
+      </div>
+      
+      <div class="chart-wrap"><canvas id="grafico-historico"></canvas></div>
+      <p class="estado-vazio caption" id="vazio-historico" style="display:none;">Ainda sem histórico suficiente.</p>
+      
+      <div class="flex justify-between mt-md p-sm" style="background: var(--surface-container-low); border-radius: var(--radius-md);">
+        <div class="flex items-center gap-xs">
+          <span style="width: 10px; height: 10px; border-radius: 50%; background: var(--primary);"></span>
+          <span class="caption">Projeção do Mês Atual: <strong id="label-projecao">...</strong></span>
+        </div>
+        <div class="flex items-center gap-xs">
+          <span style="width: 10px; height: 10px; border-radius: 50%; background: var(--surface-container-high);"></span>
+          <span class="caption">Média Histórica</span>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="label-md mb-md" style="font-size: 18px;">Recomendações Inteligentes</h2>
+    <div id="lista-recomendacoes-insights" class="flex-col gap-md mb-lg">
+      <p class="caption texto-secundario text-center py-md" id="carregando-rec">Analisando seus dados...</p>
+    </div>
+
+    <div class="card mb-lg" style="background: var(--surface-container-low); border: none;">
+      <div class="flex justify-between items-center mb-md">
+        <h2 class="label-md" style="font-size: 18px;">Metas de Economia</h2>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--primary)" stroke="var(--on-primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="border-radius: 50%;"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+      </div>
+
+      <div class="mb-md">
+        <p class="caption" style="text-transform: uppercase; letter-spacing: 1px; font-weight: 700; color: var(--on-surface-variant);">Orçamento Mensal</p>
+        <div class="flex justify-between items-end mb-xs">
+          <span class="headline-md" id="meta-orcamento-valor">R$ ---</span>
+          <span class="caption" style="font-weight: 600;" id="meta-orcamento-pct">--% gasto</span>
+        </div>
+        <div class="progress-bar-container" style="height: 8px; background: var(--surface-container-highest); border-radius: var(--radius-full); overflow: hidden;">
+          <div id="meta-orcamento-fill" class="progress-bar-fill" style="height: 100%; background: var(--primary); width: 0%; transition: width 0.5s ease-out, background 0.5s;"></div>
+        </div>
+        <p class="caption mt-xs" style="font-style: italic; color: var(--on-surface-variant);" id="meta-orcamento-projecao">Projeção: calculando...</p>
+      </div>
+
+      <div class="mb-lg">
+        <p class="caption" style="text-transform: uppercase; letter-spacing: 1px; font-weight: 700; color: var(--on-surface-variant);">Teto de Consumo</p>
+        <div class="flex justify-between items-end mb-xs">
+          <span class="headline-md" id="meta-teto-valor">--- kWh</span>
+          <span class="caption" style="font-weight: 600;" id="meta-teto-pct">--% usado</span>
+        </div>
+        <div class="progress-bar-container" style="height: 8px; background: var(--surface-container-highest); border-radius: var(--radius-full); overflow: hidden;">
+          <div id="meta-teto-fill" class="progress-bar-fill" style="height: 100%; background: var(--secondary); width: 0%; transition: width 0.5s ease-out, background 0.5s;"></div>
+        </div>
+      </div>
+
+      <a href="metas" class="btn btn-primary btn-block">Definir Nova Meta</a>
+    </div>
+
+    <div class="card mb-lg">
+      <h2 class="label-md mb-md" style="font-size: 16px;">Economia Estimada</h2>
+      <div class="flex items-center gap-md mb-md">
+        <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--primary-fixed, #7ffc97); color: var(--on-primary-fixed, #002109); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8 0 3 2 4.5V20h4v-2h3v2h4v-4c1-.5 1.5-1 2-1.5L21 11c0-4-1-6-2-6Z" /><path d="M2 9v1c0 1.1.9 2 2 2h1" /><path d="M16 11h.01" /></svg>
+        </div>
+        <div>
+          <span class="headline-md" style="color: var(--primary);" id="economia-estimada-valor">R$ --,--</span>
+          <p class="caption texto-secundario">economia potencial este mês</p>
+        </div>
+      </div>
+      <div style="background: var(--surface-container-low); padding: var(--space-sm) var(--space-md); border-radius: var(--radius-default);">
+        <p class="caption">Com base nos seus ajustes recentes, você está no caminho certo para economizar o suficiente para compensar <strong id="economia-emissoes">--kg</strong> de emissões de CO2.</p>
+      </div>
+    </div>
+
+    <div id="card-upsell-premium" class="card mb-xl" style="background: var(--inverse-surface); color: var(--inverse-on-surface); display: none;">
+      <h2 class="label-md mb-xs" style="color: var(--inverse-on-surface); font-size: 18px;">Desbloqueie o Histórico Completo</h2>
+      <p class="caption mb-md" style="opacity: 0.8;">Armazene anos de dados, exporte relatórios para CSV e tenha rastreamento de múltiplas propriedades.</p>
+      <a href="assinatura" class="link-inline" style="color: var(--inverse-primary); display: flex; align-items: center; gap: 4px; font-weight: 700;">
+        Seja Premium <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+      </a>
+    </div>
+
+  </main>
+
+  <div id="bottom-nav"></div>
+  <div id="modal-upgrade-slot"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/paginas/insights.js"></script>
+  <script>
+    carregarLayoutAutenticado("insights");
+    inicializarInsights();
+  </script>
+</body>
+</html>

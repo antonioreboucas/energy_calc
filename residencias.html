@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Residências — EnergyCalc</title>
+  <meta name="theme-color" content="#006b2c" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/componentes.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+</head>
+<body>
+  <div id="app-bar"></div>
+
+  <main class="pagina container">
+    <div class="flex justify-between items-center mb-lg mt-lg">
+      <h1 class="headline-md">Residências</h1>
+      <button class="btn btn-primary" onclick="abrirModal('modal-residencia')">+ Nova</button>
+    </div>
+
+    <div id="lista-residencias" class="flex-col gap-md"></div>
+  </main>
+
+  <div class="modal-overlay modal-hidden" id="modal-residencia">
+    <div class="modal">
+      <h2 class="headline-md mb-lg">Nova residência</h2>
+      <form id="form-residencia">
+        <div class="campo"><label for="res-nome">Nome</label><input id="res-nome" required /></div>
+        <div class="campo"><label for="res-estado">Estado (UF)</label><input id="res-estado" maxlength="2" placeholder="SP" /></div>
+        <div class="campo"><label for="res-cidade">Cidade</label><input id="res-cidade" /></div>
+        <div class="campo"><label for="res-concessionaria">Concessionária</label><input id="res-concessionaria" /></div>
+        <button type="submit" class="btn btn-primary btn-block" id="btn-salvar-residencia">Salvar</button>
+      </form>
+      <button class="btn btn-ghost btn-block mt-lg" onclick="fecharModal('modal-residencia')">Cancelar</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay modal-hidden" id="modal-tarifa">
+    <div class="modal">
+      <h2 class="headline-md mb-lg">Nova tarifa</h2>
+      <form id="form-tarifa">
+        <input type="hidden" id="tarifa-residencia-id" />
+        <div class="campo">
+          <label for="tarifa-origem">Origem</label>
+          <select id="tarifa-origem">
+            <option value="MANUAL">Manual</option>
+            <option value="ESTADO">Estado</option>
+            <option value="CIDADE">Cidade</option>
+            <option value="CONCESSIONARIA">Concessionária</option>
+          </select>
+        </div>
+        <div class="campo"><label for="tarifa-valor">Valor por kWh (R$)</label><input type="number" id="tarifa-valor" step="0.01" min="0.01" required /></div>
+        <div class="campo"><label for="tarifa-bandeira">Bandeira (opcional)</label><input id="tarifa-bandeira" placeholder="verde / amarela / vermelha" /></div>
+        <button type="submit" class="btn btn-primary btn-block" id="btn-salvar-tarifa">Salvar tarifa</button>
+      </form>
+      <button class="btn btn-ghost btn-block mt-lg" onclick="fecharModal('modal-tarifa')">Cancelar</button>
+    </div>
+  </div>
+
+  <div id="bottom-nav"></div>
+  <div id="modal-upgrade-slot"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/paginas/residencias.js"></script>
+  <script>
+    carregarLayoutAutenticado("perfil");
+    inicializarResidencias();
+  </script>
+</body>
+</html>

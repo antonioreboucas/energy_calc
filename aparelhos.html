@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aparelhos — EnergyCalc</title>
+  <meta name="theme-color" content="#006b2c" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/componentes.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+</head>
+<body>
+  <div id="app-bar"></div>
+
+  <main class="pagina container">
+    <h1 class="headline-md mt-lg">Aparelhos Registrados</h1>
+    <p class="body-md texto-secundario mb-lg">Gerencie e monitore a eficiência dos seus eletrodomésticos.</p>
+
+    <div class="abas">
+      <button class="aba ativa" data-aba="lista" onclick="mudarAba('lista')">Meus aparelhos</button>
+      <button class="aba" data-aba="simular" onclick="mudarAba('simular')">Simular</button>
+      <button class="aba" data-aba="comparar" onclick="mudarAba('comparar')">Comparar</button>
+      <button class="aba" data-aba="recomendacoes" onclick="mudarAba('recomendacoes')">Recomendações</button>
+      <span class="abas-indicator" aria-hidden="true"></span>
+    </div>
+
+    <!-- Aba: lista -->
+    <div id="aba-lista">
+      <div id="aviso-sem-residencia" class="card mb-lg" style="display:none;">
+        <p class="body-md mb-lg">Cadastre uma residência antes de adicionar aparelhos.</p>
+        <a href="residencias" class="btn btn-primary btn-block">Cadastrar residência</a>
+      </div>
+
+      <div id="banner-limite" class="banner-limite mb-lg" style="display:none;">
+        <span class="banner-limite-icone">i</span>
+        <p class="banner-limite-texto">Plano Gratuito: <strong id="banner-limite-uso">— de —</strong> aparelhos usados.</p>
+        <a href="assinatura" class="btn btn-escuro btn-sm">Assinar Pro</a>
+      </div>
+
+      <div id="lista-aparelhos" class="lista-aparelhos-grid mb-lg"></div>
+
+      <a href="novo_aparelho" class="card-novo-aparelho" id="card-novo-aparelho">
+        <span class="card-novo-aparelho-icone">+</span>
+        <p class="label-md forte">Adicionar Novo Aparelho</p>
+        <p class="caption" id="card-novo-aparelho-subtitulo">Toque para cadastrar mais um aparelho.</p>
+      </a>
+    </div>
+
+    <!-- Aba: simular -->
+    <div id="aba-simular" style="display:none;">
+      <div class="card">
+        <form id="form-simular">
+          <div class="campo"><label for="sim-potencia">Potência (W)</label><input type="number" id="sim-potencia" min="1" required value="100" /></div>
+          <div class="campo"><label for="sim-quantidade">Quantidade</label><input type="number" id="sim-quantidade" min="1" required value="1" /></div>
+          <div class="campo"><label for="sim-horas">Horas de uso por dia</label><input type="number" id="sim-horas" min="0" max="24" step="0.5" required value="4" /></div>
+          <div class="campo"><label for="sim-dias">Dias de uso por mês</label><input type="number" id="sim-dias" min="1" max="31" required value="30" /></div>
+          <div class="campo"><label for="sim-tarifa">Tarifa (R$/kWh)</label><input type="number" id="sim-tarifa" min="0.01" step="0.01" required value="0.75" /></div>
+          <button type="submit" class="btn btn-primary btn-block" id="btn-simular">Calcular</button>
+        </form>
+        <div id="sim-resultado" class="grid-cards mt-lg" style="display:none;">
+          <div class="card"><p class="card-title">Consumo diário</p><p class="card-value" id="sim-consumo-diario">—</p></div>
+          <div class="card"><p class="card-title">Consumo mensal</p><p class="card-value" id="sim-consumo-mensal">—</p></div>
+          <div class="card"><p class="card-title">Custo estimado</p><p class="card-value positivo" id="sim-custo">—</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Aba: comparar -->
+    <div id="aba-comparar" style="display:none;">
+      <p class="body-md mb-lg">Selecione até 4 aparelhos pra comparar.</p>
+      <div id="checkboxes-comparar" class="flex-col gap-sm mb-lg"></div>
+      <button class="btn btn-primary btn-block" id="btn-comparar" onclick="compararAparelhos()">Comparar</button>
+      <div id="resultado-comparacao" class="flex-col gap-md mt-lg"></div>
+    </div>
+
+    <!-- Aba: recomendações -->
+    <div id="aba-recomendacoes" style="display:none;">
+      <button class="btn btn-primary btn-block mb-lg" id="btn-gerar-recomendacoes" onclick="gerarRecomendacoes()">Gerar novas recomendações</button>
+      <div id="lista-recomendacoes" class="flex-col gap-md"></div>
+    </div>
+  </main>
+
+  <div id="bottom-nav"></div>
+  <div id="modal-upgrade-slot"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/paginas/recomendacoes.js"></script>
+  <script src="js/paginas/aparelhos.js"></script>
+  <script>
+    carregarLayoutAutenticado("aparelhos");
+    inicializarAparelhos();
+  </script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Novo aparelho — EnergyCalc</title>
+  <meta name="theme-color" content="#006b2c" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/componentes.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+</head>
+<body>
+  <div id="app-bar"></div>
+
+  <main class="pagina container">
+    <div class="novo-aparelho-cabecalho">
+      <div class="novo-aparelho-icone">+</div>
+      <h1 class="headline-md">Adicionar Novo Aparelho</h1>
+      <p class="body-md texto-secundario" id="novo-aparelho-subtitulo">Cadastre um novo aparelho e acompanhe seu consumo.</p>
+    </div>
+
+    <div id="aviso-sem-residencia" class="card mb-lg" style="display:none;">
+      <p class="body-md mb-lg">Cadastre uma residência antes de adicionar aparelhos.</p>
+      <a href="residencias" class="btn btn-primary btn-block">Cadastrar residência</a>
+    </div>
+
+    <div class="card">
+      <h2 class="headline-md mb-lg">Calculadora de Consumo Detalhada</h2>
+      <form id="form-novo-aparelho">
+        <div class="campo">
+          <label for="na-nome">Nome do Aparelho</label>
+          <input id="na-nome" placeholder="ex: Ar Condicionado" required />
+        </div>
+        <div class="campo">
+          <label for="na-ambiente">Cômodo</label>
+          <input id="na-ambiente" placeholder="ex: Sala de Estar" required />
+        </div>
+        <div class="campo">
+          <label for="na-categoria">Categoria</label>
+          <select id="na-categoria" required>
+            <option value="Eletrodomésticos">Eletrodomésticos</option>
+            <option value="Eletrônicos">Eletrônicos</option>
+            <option value="Iluminação">Iluminação</option>
+            <option value="Climatização">Climatização</option>
+            <option value="Aquecimento">Aquecimento</option>
+            <option value="Lavanderia">Lavanderia</option>
+            <option value="Outros">Outros</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label>Como você quer informar o consumo?</label>
+          <div class="toggle-modo-potencia">
+            <button type="button" class="toggle-modo-btn ativo" data-modo="potencia" onclick="alternarModoPotencia('potencia')">Sei a potência (W)</button>
+            <button type="button" class="toggle-modo-btn" data-modo="kwh" onclick="alternarModoPotencia('kwh')">Só sei o consumo (kWh/mês)</button>
+          </div>
+        </div>
+        <div class="campo" id="campo-potencia-watts">
+          <label for="na-potencia">Potência (Watts)</label>
+          <input type="number" id="na-potencia" min="1" step="1" placeholder="0" required />
+        </div>
+        <div class="campo" id="campo-consumo-kwh" style="display:none;">
+          <label for="na-kwh-mes">Consumo mensal (kWh)</label>
+          <input type="number" id="na-kwh-mes" min="0.1" step="0.1" placeholder="ex: 45" />
+          <p class="caption">Veja esse número na etiqueta Procel/INMETRO do aparelho ou na sua conta de luz.</p>
+          <p class="caption" id="na-potencia-equivalente"></p>
+        </div>
+        <div class="campo">
+          <label for="na-quantidade">Quantidade</label>
+          <input type="number" id="na-quantidade" min="1" step="1" value="1" required />
+        </div>
+        <div class="campo">
+          <label for="na-eficiencia">Eficiência (%)</label>
+          <input type="number" id="na-eficiencia" min="1" max="100" step="1" value="90" />
+        </div>
+        <div class="campo campo-slider">
+          <label for="na-horas">Horas/Dia <span class="slider-valor" id="na-horas-valor">4h</span></label>
+          <input type="range" id="na-horas" min="0" max="24" step="0.5" value="4" />
+        </div>
+        <div class="campo campo-slider">
+          <label for="na-dias">Dias/Mês <span class="slider-valor" id="na-dias-valor">30</span></label>
+          <input type="range" id="na-dias" min="1" max="31" step="1" value="30" />
+        </div>
+        <div class="campo" id="campo-residencia-wrap" style="display:none;">
+          <label for="na-residencia">Residência</label>
+          <select id="na-residencia"></select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="btn-salvar-novo-aparelho">Salvar Aparelho</button>
+      </form>
+
+      <div class="dica-card">
+        <p class="dica-card-titulo">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6" /><path d="M10 22h4" /><path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z" /></svg>
+          Você sabia?
+        </p>
+        <p class="caption">Reduzir sua eficiência em apenas 5% pode aumentar sua conta de energia anual em até R$ 600. Verifique as classificações Procel em novos aparelhos.</p>
+      </div>
+    </div>
+  </main>
+
+  <div id="bottom-nav"></div>
+  <div id="modal-upgrade-slot"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/paginas/novo_aparelho.js"></script>
+  <script>
+    carregarLayoutAutenticado("aparelhos");
+    inicializarNovoAparelho();
+  </script>
+</body>
+</html>

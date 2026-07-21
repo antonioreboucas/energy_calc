@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Política de Cookies — EnergyCalc</title>
+  <meta name="theme-color" content="#006b2c" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/componentes.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <style>
+    .politica-conteudo h2 { margin-top: var(--space-xl); margin-bottom: var(--space-sm); }
+    .politica-conteudo h2:first-child { margin-top: 0; }
+    .politica-conteudo p { margin-bottom: var(--space-md); }
+    .politica-conteudo ul { margin: 0 0 var(--space-md); padding-left: var(--space-lg); }
+    .politica-conteudo li { margin-bottom: var(--space-sm); }
+    .tabela-cookies { width: 100%; border-collapse: collapse; margin-bottom: var(--space-md); font-size: var(--label-md-size); }
+    .tabela-cookies th, .tabela-cookies td { text-align: left; padding: var(--space-sm); border-bottom: 1px solid var(--outline-variant); vertical-align: top; }
+    .tabela-cookies th { color: var(--on-surface-variant); font-weight: 600; font-size: var(--caption-size); text-transform: uppercase; }
+  </style>
+</head>
+<body>
+  <div id="nav-publico"></div>
+
+  <main class="pagina publica">
+    <section class="container secao mt-lg">
+      <h1 class="headline-lg mb-sm">Política de Cookies</h1>
+      <p class="caption texto-secundario mb-lg">Última atualização: 21 de julho de 2026</p>
+
+      <div class="card politica-conteudo">
+        <h2 class="headline-md">O que são cookies</h2>
+        <p class="body-md">Cookies são pequenos arquivos de texto que um site pode salvar no seu navegador para lembrar de alguma informação entre visitas ou requisições — por exemplo, para manter você conectado a uma sessão.</p>
+
+        <h2 class="headline-md">O EnergyCalc não usa cookies para o app</h2>
+        <p class="body-md">O aplicativo que você usa para cadastrar aparelhos, ver seu dashboard, enviar faturas e acompanhar metas <strong>não usa cookies</strong>. O login é feito com um token guardado no armazenamento local do seu navegador (<em>localStorage</em>), não em cookies — então não existe cookie de sessão, de preferências ou de qualquer outro tipo criado pelo uso normal do EnergyCalc.</p>
+
+        <h2 class="headline-md">O único cookie que usamos</h2>
+        <p class="body-md">Mantemos internamente um painel técnico de métricas (monitoramento de banco de dados), protegido por senha, usado só pela nossa equipe — não é uma tela que faz parte do produto que você usa. Esse painel usa um cookie estritamente necessário para manter a sessão de quem está logado nele:</p>
+        <div style="overflow-x:auto;">
+          <table class="tabela-cookies">
+            <thead>
+              <tr><th>Nome</th><th>Finalidade</th><th>Duração</th><th>Tipo</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>status_db_session</code></td>
+                <td>Manter a sessão de login no painel interno de métricas</td>
+                <td>12 horas</td>
+                <td>Estritamente necessário (não é usado para rastreamento ou publicidade)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="body-md">Esse cookie é <code>HttpOnly</code> (não pode ser lido por scripts) e só é criado se alguém acessar essa área interna e fizer login nela — a grande maioria dos usuários do EnergyCalc nunca vai encontrar esse cookie.</p>
+
+        <h2 class="headline-md">Cookies de serviços de terceiros</h2>
+        <p class="body-md">Algumas partes do site carregam recursos de outros serviços, que têm suas próprias políticas de cookies e privacidade, fora do nosso controle:</p>
+        <ul class="body-md">
+          <li><strong>Google Fonts</strong> — usamos a fonte Inter, carregada dos servidores do Google em todas as páginas. O serviço atual do Google Fonts não define cookies, mas o seu navegador faz uma requisição direta aos servidores do Google para buscar a fonte.</li>
+          <li><strong>Login com Google</strong> — nas telas de login e cadastro, oferecemos "Entrar com Google" como opção. Se você usar essa opção, o script de autenticação do Google é carregado e pode definir cookies próprios, de acordo com a <a href="https://policies.google.com/technologies/cookies" target="_blank" rel="noopener">política de cookies do Google</a>.</li>
+          <li><strong>Stripe</strong> — ao assinar o plano Premium, você é redirecionado para uma página de pagamento segura hospedada pela Stripe. Cookies eventualmente definidos nessa etapa são da Stripe, não do EnergyCalc, e seguem a <a href="https://stripe.com/br/privacy" target="_blank" rel="noopener">política de privacidade da Stripe</a>.</li>
+        </ul>
+
+        <h2 class="headline-md">O que não usamos</h2>
+        <p class="body-md">Não usamos cookies de publicidade, de rastreamento entre sites, nem ferramentas de analytics como Google Analytics ou Meta Pixel. Não vendemos nem compartilhamos dados de navegação com anunciantes.</p>
+
+        <h2 class="headline-md">Como gerenciar cookies no seu navegador</h2>
+        <p class="body-md">Você pode bloquear ou apagar cookies a qualquer momento nas configurações de privacidade do seu navegador. Como o EnergyCalc em si não depende de cookies para funcionar, bloquear cookies não deve afetar o uso normal do app — o pior caso é o painel técnico interno (mencionado acima) parar de manter a sessão de quem faz login nele.</p>
+
+        <h2 class="headline-md">Alterações nesta política</h2>
+        <p class="body-md">Podemos atualizar esta página caso o EnergyCalc passe a usar cookies adicionais no futuro (por exemplo, se ativarmos alguma ferramenta de analytics). A data no topo desta página sempre indica a versão mais recente.</p>
+
+        <h2 class="headline-md">Dúvidas</h2>
+        <p class="body-md">Se tiver alguma dúvida sobre esta política, entre em contato pelo e-mail <a href="mailto:privacidade@energycalc.com">privacidade@energycalc.com</a>.</p>
+      </div>
+
+      <p class="caption texto-secundario mt-lg" style="text-align:center;">
+        <a href="/" class="link-inline forte">Voltar para a página inicial</a>
+      </p>
+    </section>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/layout.js"></script>
+  <script>
+    carregarLayoutPublico();
+  </script>
+</body>
+</html>

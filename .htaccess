@@ -1,0 +1,10 @@
+# Faz o Apache se comportar como o servidor embutido do PHP com router
+# ("php -S host:porta router.php"): toda URL que não corresponde a um
+# arquivo/diretório real (ex: "/dashboard", "/js/config.js") passa por
+# router.php, que decide o que fazer — mesma lógica de "file_exists ->
+# deixa passar direto" que router.php já usa pro servidor embutido, só que
+# aplicada aqui na camada do Apache em vez de na do PHP dev server.
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ router.php [L]

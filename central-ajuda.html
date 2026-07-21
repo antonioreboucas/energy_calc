@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Central de Ajuda — EnergyCalc</title>
+  <meta name="theme-color" content="#006b2c" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/componentes.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+</head>
+<body>
+  <div id="nav-publico"></div>
+
+  <main class="pagina publica">
+    <section class="container secao mt-lg">
+      <h1 class="headline-lg mb-sm">Central de Ajuda</h1>
+      <p class="body-md texto-secundario mb-lg">Respostas rápidas pras dúvidas mais comuns sobre o EnergyCalc.</p>
+
+      <div class="faq-lista">
+        <div class="faq-item">
+          <button class="faq-pergunta" onclick="alternarFaq(this)">
+            Como cadastro minha primeira residência e aparelho?
+            <span class="faq-seta">⌄</span>
+          </button>
+          <div class="faq-resposta">
+            <p class="body-md texto-secundario">Vá em Residências e cadastre sua casa primeiro — é o passo obrigatório, sem ele nada mais funciona. Depois adicione uma tarifa (R$/kWh) pra essa residência, e só então cadastre seus aparelhos em "+ Novo Aparelho". A tela de Dashboard mostra um convite de boas-vindas com esses passos até você concluir o primeiro.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-pergunta" onclick="alternarFaq(this)">
+            Como o EnergyCalc calcula meu consumo e custo?
+            <span class="faq-seta">⌄</span>
+          </button>
+          <div class="faq-resposta">
+            <p class="body-md texto-secundario">Consumo diário (kWh) = potência (W) × quantidade × horas de uso por dia ÷ 1000. Consumo mensal = consumo diário × dias de uso no mês. Custo = consumo mensal × tarifa (R$/kWh) da sua residência. Pra aparelhos de uso cíclico (geladeira, freezer), você também pode informar o consumo mensal direto em kWh da etiqueta Procel/INMETRO em vez de potência — o app calcula a potência equivalente sozinho.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-pergunta" onclick="alternarFaq(this)">
+            O que é a bandeira tarifária e por que ela afeta meu custo?
+            <span class="faq-seta">⌄</span>
+          </button>
+          <div class="faq-resposta">
+            <p class="body-md texto-secundario">É um adicional que a concessionária cobra em meses de condição de geração de energia mais cara no país (verde = sem custo extra, amarela e vermelha = custo extra por 100 kWh consumidos). Quando você envia uma fatura real, extraímos a bandeira do mês direto do documento.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-pergunta" onclick="alternarFaq(this)">
+            Qual a diferença entre enviar uma fatura e só cadastrar aparelhos?
+            <span class="faq-seta">⌄</span>
+          </button>
+          <div class="faq-resposta">
+            <p class="body-md texto-secundario">Cadastrar aparelhos gera uma <strong>estimativa</strong> calculada a partir da configuração deles. Enviar a fatura em PDF (tela "Enviar Fatura") extrai os dados <strong>reais</strong> cobrados pela concessionária naquele mês — sempre que existir uma fatura real pro mês, ela tem prioridade sobre a estimativa nos gráficos e no histórico.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-pergunta" onclick="alternarFaq(this)">
+            Qual a diferença entre os planos Free e Premium?
+            <span class="faq-seta">⌄</span>
+          </button>
+          <div class="faq-resposta">
+            <p class="body-md texto-secundario">O plano Free tem limite de aparelhos e residências cadastráveis, histórico de consumo mais curto e não inclui exportação de relatórios nem recomendações com IA. O Premium libera tudo isso. Os limites exatos aparecem na tela de Planos e na sua Assinatura.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-pergunta" onclick="alternarFaq(this)">
+            Como cancelo minha assinatura Premium?
+            <span class="faq-seta">⌄</span>
+          </button>
+          <div class="faq-resposta">
+            <p class="body-md texto-secundario">Na tela de Assinatura, toque em "Cancelar assinatura". O cancelamento é imediato no sentido de parar a renovação automática, mas você mantém acesso Premium até o fim do período já pago — não tem multa nem cobrança adicional.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-pergunta" onclick="alternarFaq(this)">
+            Esqueci minha senha, e agora?
+            <span class="faq-seta">⌄</span>
+          </button>
+          <div class="faq-resposta">
+            <p class="body-md texto-secundario">Na tela de login, toque em "Esqueci minha senha" e informe seu e-mail — enviamos um link de redefinição. Se você criou a conta com login do Google, use o botão "Entrar com Google" em vez de senha.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-pergunta" onclick="alternarFaq(this)">
+            Meus dados estão seguros? Como excluo minha conta?
+            <span class="faq-seta">⌄</span>
+          </button>
+          <div class="faq-resposta">
+            <p class="body-md texto-secundario">Sim — veja os detalhes na nossa <a href="politica-privacidade" class="link-inline">Política de Privacidade</a>. Pra solicitar a exclusão da sua conta e dos seus dados, entre em contato pelo e-mail abaixo.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mt-xl" style="text-align:center;">
+        <h2 class="headline-md mb-sm" style="font-size: 18px;">Não achou o que precisava?</h2>
+        <p class="body-md texto-secundario mb-lg">Fale com a gente e respondemos o quanto antes.</p>
+        <a href="mailto:suporte@energycalc.com" class="btn btn-primary btn-block">Enviar e-mail pro suporte</a>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/layout.js"></script>
+  <script>
+    carregarLayoutPublico();
+  </script>
+</body>
+</html>

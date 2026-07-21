@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Faturamento e Conta — EnergyCalc</title>
+  <meta name="theme-color" content="#006b2c" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/componentes.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+</head>
+<body>
+  <div id="app-bar"></div>
+
+  <main class="pagina container">
+    <h1 class="headline-md mt-lg">Faturamento e Conta</h1>
+    <p class="body-md texto-secundario mb-lg">Gerencie sua assinatura, revise seu histórico de pagamentos e continue economizando energia.</p>
+
+    <div class="card card-assinatura mb-lg" id="card-assinatura"></div>
+
+    <div id="acoes-assinatura" class="flex-col gap-sm mb-lg"></div>
+
+    <div class="flex justify-between items-center mb-lg">
+      <h2 class="label-md">Histórico de Pagamentos</h2>
+      <button class="link-inline forte" style="background:none;border:none;" onclick="mostrarToast('Exportação de fatura em breve.')">Baixar tudo ↓</button>
+    </div>
+    <div id="lista-pagamentos" class="flex-col gap-sm"></div>
+  </main>
+
+  <div id="bottom-nav"></div>
+  <div id="modal-upgrade-slot"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/paginas/assinatura.js"></script>
+  <script>
+    carregarLayoutAutenticado("perfil");
+    inicializarAssinatura();
+  </script>
+</body>
+</html>

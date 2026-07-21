@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Criar conta — EnergyCalc</title>
+  <meta name="theme-color" content="#006b2c" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/componentes.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+</head>
+<body>
+  <main class="tela-auth">
+    <div class="auth-cabecalho">
+      <img src="icons/icon-192.png" alt="" class="auth-logo" />
+      <h1 class="auth-titulo-app">EnergyCalc</h1>
+      <p class="auth-tagline">Fortalecendo seu futuro sustentável.</p>
+    </div>
+
+    <div class="card auth-card">
+      <h2 class="headline-md mb-lg">Criar conta</h2>
+
+      <form id="form-cadastro">
+        <div class="campo">
+          <label for="nome">Nome</label>
+          <input type="text" id="nome" required autocomplete="name" placeholder="Seu nome completo" />
+        </div>
+        <div class="campo">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" required autocomplete="email" placeholder="nome@empresa.com" />
+        </div>
+        <div class="campo">
+          <label for="senha">Senha</label>
+          <input type="password" id="senha" required minlength="6" autocomplete="new-password" placeholder="••••••••" />
+          <p class="caption">Mínimo de 6 caracteres.</p>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="btn-cadastrar">Criar conta grátis</button>
+      </form>
+
+      <div class="auth-divisor"><span>OU CONTINUE COM</span></div>
+
+      <div id="google-signin-container"></div>
+
+      <p class="caption" style="text-align:center; margin-top: var(--space-lg);">
+        Já tem conta? <a href="login" class="link-inline forte">Entrar</a>
+      </p>
+    </div>
+
+    <footer class="auth-rodape">
+      <a href="politica-privacidade">Política de Privacidade</a>
+      <a href="politica-cookies">Política de Cookies</a>
+      <a href="termos-uso">Termos de Uso</a>
+      <a href="central-ajuda">Central de Ajuda</a>
+    </footer>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/paginas/cadastro.js"></script>
+  <script>
+    inicializarCadastro();
+  </script>
+</body>
+</html>

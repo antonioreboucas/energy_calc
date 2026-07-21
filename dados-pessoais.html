@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dados Pessoais — EnergyCalc</title>
+  <meta name="theme-color" content="#006b2c" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/componentes.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+</head>
+<body>
+  <div id="app-bar"></div>
+
+  <main class="pagina container">
+    <div class="mb-lg mt-lg flex items-center gap-sm">
+      <button class="btn-icone" onclick="window.location.href='perfil'" aria-label="Voltar" style="background: var(--surface-container); border-radius: 50%;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+      <h1 class="headline-md" style="font-weight: 700;">Dados Pessoais</h1>
+    </div>
+
+    <div class="card mb-lg">
+      <h2 class="headline-md mb-lg" style="font-size: 18px;">Informações da conta</h2>
+      <form id="form-dados-pessoais">
+        <div class="campo">
+          <label for="dp-nome">Nome completo</label>
+          <input id="dp-nome" required autocomplete="name" />
+        </div>
+        <div class="campo">
+          <label for="dp-email">E-mail</label>
+          <input id="dp-email" type="email" required autocomplete="email" />
+          <p class="caption texto-secundario" id="dp-email-aviso" style="display:none;">Trocar o e-mail exige verificar o novo endereço de novo.</p>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="btn-salvar-dados">Salvar alterações</button>
+      </form>
+    </div>
+
+    <div class="card" id="card-alterar-senha">
+      <h2 class="headline-md mb-lg" style="font-size: 18px;">Alterar senha</h2>
+      <form id="form-alterar-senha">
+        <div class="campo">
+          <label for="dp-senha-atual">Senha atual</label>
+          <input id="dp-senha-atual" type="password" required autocomplete="current-password" />
+        </div>
+        <div class="campo">
+          <label for="dp-senha-nova">Nova senha</label>
+          <input id="dp-senha-nova" type="password" required minlength="6" autocomplete="new-password" />
+        </div>
+        <div class="campo">
+          <label for="dp-senha-confirmar">Confirmar nova senha</label>
+          <input id="dp-senha-confirmar" type="password" required minlength="6" autocomplete="new-password" />
+          <p class="erro-campo" id="dp-senha-erro" style="display:none;">As senhas não coincidem.</p>
+        </div>
+        <button type="submit" class="btn btn-secondary btn-block" id="btn-alterar-senha">Alterar senha</button>
+      </form>
+    </div>
+  </main>
+
+  <div id="bottom-nav"></div>
+  <div id="modal-upgrade-slot"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/paginas/dados_pessoais.js"></script>
+  <script>
+    carregarLayoutAutenticado("perfil");
+    inicializarDadosPessoais();
+  </script>
+</body>
+</html>

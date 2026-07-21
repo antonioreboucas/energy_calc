@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Editar aparelho — EnergyCalc</title>
+  <meta name="theme-color" content="#006b2c" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/componentes.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+</head>
+<body>
+  <div id="app-bar"></div>
+
+  <main class="pagina container">
+    <div class="novo-aparelho-cabecalho">
+      <div class="novo-aparelho-icone">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z" /></svg>
+      </div>
+      <h1 class="headline-md">Editar Aparelho</h1>
+      <p class="body-md texto-secundario" id="editar-aparelho-subtitulo">Carregando dados do aparelho...</p>
+    </div>
+
+    <div class="card" id="card-form-editar" style="display:none;">
+      <h2 class="headline-md mb-lg">Calculadora de Consumo Detalhada</h2>
+      <form id="form-editar-aparelho">
+        <input type="hidden" id="ea-id" />
+        <div class="campo">
+          <label for="ea-nome">Nome do Aparelho</label>
+          <input id="ea-nome" placeholder="ex: Ar Condicionado" required />
+        </div>
+        <div class="campo">
+          <label for="ea-ambiente">Cômodo</label>
+          <input id="ea-ambiente" placeholder="ex: Sala de Estar" required />
+        </div>
+        <div class="campo">
+          <label for="ea-categoria">Categoria</label>
+          <select id="ea-categoria" required>
+            <option value="Eletrodomésticos">Eletrodomésticos</option>
+            <option value="Eletrônicos">Eletrônicos</option>
+            <option value="Iluminação">Iluminação</option>
+            <option value="Climatização">Climatização</option>
+            <option value="Aquecimento">Aquecimento</option>
+            <option value="Lavanderia">Lavanderia</option>
+            <option value="Outros">Outros</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label>Como você quer informar o consumo?</label>
+          <div class="toggle-modo-potencia">
+            <button type="button" class="toggle-modo-btn ativo" data-modo="potencia" onclick="alternarModoPotencia('potencia')">Sei a potência (W)</button>
+            <button type="button" class="toggle-modo-btn" data-modo="kwh" onclick="alternarModoPotencia('kwh')">Só sei o consumo (kWh/mês)</button>
+          </div>
+        </div>
+        <div class="campo" id="campo-potencia-watts">
+          <label for="ea-potencia">Potência (Watts)</label>
+          <input type="number" id="ea-potencia" min="1" step="1" placeholder="0" required />
+        </div>
+        <div class="campo" id="campo-consumo-kwh" style="display:none;">
+          <label for="ea-kwh-mes">Consumo mensal (kWh)</label>
+          <input type="number" id="ea-kwh-mes" min="0.1" step="0.1" placeholder="ex: 45" />
+          <p class="caption">Veja esse número na etiqueta Procel/INMETRO do aparelho ou na sua conta de luz.</p>
+          <p class="caption" id="ea-potencia-equivalente"></p>
+        </div>
+        <div class="campo">
+          <label for="ea-quantidade">Quantidade</label>
+          <input type="number" id="ea-quantidade" min="1" step="1" value="1" required />
+        </div>
+        <div class="campo">
+          <label for="ea-eficiencia">Eficiência (%)</label>
+          <input type="number" id="ea-eficiencia" min="1" max="100" step="1" />
+        </div>
+        <div class="campo campo-slider">
+          <label for="ea-horas">Horas/Dia <span class="slider-valor" id="ea-horas-valor">4h</span></label>
+          <input type="range" id="ea-horas" min="0" max="24" step="0.5" value="4" />
+        </div>
+        <div class="campo campo-slider">
+          <label for="ea-dias">Dias/Mês <span class="slider-valor" id="ea-dias-valor">30</span></label>
+          <input type="range" id="ea-dias" min="1" max="31" step="1" value="30" />
+        </div>
+        <div class="campo">
+          <label for="ea-observacoes">Observações (opcional)</label>
+          <textarea id="ea-observacoes" rows="2"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="btn-salvar-editar-aparelho">Salvar Alterações</button>
+      </form>
+    </div>
+  </main>
+
+  <div id="bottom-nav"></div>
+  <div id="modal-upgrade-slot"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/paginas/editar_aparelho.js"></script>
+  <script>
+    carregarLayoutAutenticado("aparelhos");
+    inicializarEditarAparelho();
+  </script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Metas — EnergyCalc</title>
+  <meta name="theme-color" content="#006b2c" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/componentes.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+</head>
+<body>
+  <div id="app-bar"></div>
+
+  <main class="pagina container">
+    <div class="flex justify-between items-center mb-lg mt-lg">
+      <h1 class="headline-md">Metas</h1>
+      <button class="btn btn-primary" onclick="abrirModal('modal-meta')">+ Nova</button>
+    </div>
+
+    <div id="lista-metas" class="flex-col gap-md"></div>
+  </main>
+
+  <div class="modal-overlay modal-hidden" id="modal-meta">
+    <div class="modal">
+      <h2 class="headline-md mb-lg">Nova meta</h2>
+      <form id="form-meta">
+        <div class="campo">
+          <label for="meta-tipo">Tipo</label>
+          <select id="meta-tipo">
+            <option value="KWH">kWh</option>
+            <option value="REAIS">R$</option>
+          </select>
+        </div>
+        <div class="campo"><label for="meta-valor">Valor alvo</label><input type="number" id="meta-valor" step="0.01" min="0.01" required /></div>
+        <div class="campo">
+          <label for="meta-mes">Mês</label>
+          <select id="meta-mes">
+            <option value="1">Janeiro</option><option value="2">Fevereiro</option><option value="3">Março</option>
+            <option value="4">Abril</option><option value="5">Maio</option><option value="6">Junho</option>
+            <option value="7">Julho</option><option value="8">Agosto</option><option value="9">Setembro</option>
+            <option value="10">Outubro</option><option value="11">Novembro</option><option value="12">Dezembro</option>
+          </select>
+        </div>
+        <div class="campo"><label for="meta-ano">Ano</label><input type="number" id="meta-ano" required /></div>
+        <div class="campo">
+          <label for="meta-residencia">Residência (opcional)</label>
+          <select id="meta-residencia"><option value="">Todas</option></select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="btn-salvar-meta">Salvar</button>
+      </form>
+      <button class="btn btn-ghost btn-block mt-lg" onclick="fecharModal('modal-meta')">Cancelar</button>
+    </div>
+  </div>
+
+  <div id="bottom-nav"></div>
+  <div id="modal-upgrade-slot"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/paginas/metas.js"></script>
+  <script>
+    carregarLayoutAutenticado("metas");
+    inicializarMetas();
+  </script>
+</body>
+</html>

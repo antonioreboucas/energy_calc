@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Política de Privacidade — EnergyCalc</title>
+  <meta name="theme-color" content="#006b2c" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/componentes.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <style>
+    .politica-conteudo h2 { margin-top: var(--space-xl); margin-bottom: var(--space-sm); }
+    .politica-conteudo h2:first-child { margin-top: 0; }
+    .politica-conteudo p { margin-bottom: var(--space-md); }
+    .politica-conteudo ul { margin: 0 0 var(--space-md); padding-left: var(--space-lg); }
+    .politica-conteudo li { margin-bottom: var(--space-sm); }
+    .tabela-dados { width: 100%; border-collapse: collapse; margin-bottom: var(--space-md); font-size: var(--label-md-size); }
+    .tabela-dados th, .tabela-dados td { text-align: left; padding: var(--space-sm); border-bottom: 1px solid var(--outline-variant); vertical-align: top; }
+    .tabela-dados th { color: var(--on-surface-variant); font-weight: 600; font-size: var(--caption-size); text-transform: uppercase; }
+    .politica-aviso { background: var(--surface-container-high); border-radius: var(--radius-md); padding: var(--space-md); font-size: var(--caption-size); color: var(--on-surface-variant); margin-top: var(--space-xl); }
+  </style>
+</head>
+<body>
+  <div id="nav-publico"></div>
+
+  <main class="pagina publica">
+    <section class="container secao mt-lg">
+      <h1 class="headline-lg mb-sm">Política de Privacidade</h1>
+      <p class="caption texto-secundario mb-lg">Última atualização: 21 de julho de 2026</p>
+
+      <div class="card politica-conteudo">
+        <h2 class="headline-md">1. Quem somos</h2>
+        <p class="body-md">O EnergyCalc é o controlador dos dados pessoais tratados através deste app, nos termos da Lei Geral de Proteção de Dados (LGPD — Lei nº 13.709/2018). Esta política explica quais dados coletamos, por quê, e quais direitos você tem sobre eles.</p>
+
+        <h2 class="headline-md">2. Quais dados coletamos</h2>
+        <div style="overflow-x:auto;">
+          <table class="tabela-dados">
+            <thead><tr><th>Categoria</th><th>Dados</th><th>Origem</th></tr></thead>
+            <tbody>
+              <tr><td>Conta</td><td>Nome, e-mail, senha (armazenada como hash, nunca em texto puro)</td><td>Você informa no cadastro</td></tr>
+              <tr><td>Login social</td><td>ID da conta Google, se você optar por entrar com Google</td><td>Google, com sua autorização</td></tr>
+              <tr><td>Residências</td><td>Nome que você dá à residência, cidade, estado, concessionária</td><td>Você cadastra</td></tr>
+              <tr><td>Aparelhos e tarifas</td><td>Potência, horas de uso, categoria, valor do kWh</td><td>Você cadastra</td></tr>
+              <tr><td>Faturas enviadas</td><td>Unidade Consumidora (UC), código de cliente, consumo, valores, tarifas, bandeira — extraídos do PDF que você envia</td><td>Extraído automaticamente do arquivo que você envia (processamento local no seu navegador e/ou no nosso servidor, nunca compartilhado com terceiros pra essa extração)</td></tr>
+              <tr><td>Pagamento</td><td>Histórico de valores e status de pagamento — <strong>não</strong> número de cartão</td><td>Processado e armazenado pela Stripe; só o resultado (aprovado/recusado, valor) chega até nós</td></tr>
+              <tr><td>Uso do app</td><td>Registros técnicos básicos de erro, pra manter o serviço funcionando</td><td>Gerado automaticamente</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 class="headline-md">3. Para que usamos seus dados</h2>
+        <ul class="body-md">
+          <li>Fornecer o serviço em si: calcular consumo/custo, gerar gráficos, metas e recomendações;</li>
+          <li>Processar pagamentos da assinatura Premium;</li>
+          <li>Enviar e-mails operacionais (verificação de conta, redefinição de senha, avisos de cobrança);</li>
+          <li>Gerar o texto (não os números) de recomendações de economia personalizadas com auxílio de IA — ver seção 5;</li>
+          <li>Corrigir problemas técnicos e manter a segurança da plataforma.</li>
+        </ul>
+        <p class="body-md">Não usamos seus dados para publicidade, não vendemos dados a terceiros, e não fazemos rastreamento entre sites — ver também a <a href="politica-cookies" class="link-inline">Política de Cookies</a>.</p>
+
+        <h2 class="headline-md">4. Base legal (LGPD)</h2>
+        <p class="body-md">Tratamos seus dados com base na <strong>execução de contrato</strong> (pra fornecer o serviço que você contratou ao criar a conta), no <strong>consentimento</strong> (quando você opta por login com Google, por exemplo) e no <strong>legítimo interesse</strong> (segurança e prevenção de fraude).</p>
+
+        <h2 class="headline-md">5. Com quem compartilhamos dados</h2>
+        <ul class="body-md">
+          <li><strong>Stripe</strong> — processamento de pagamento da assinatura Premium (dados de cobrança e cartão ficam com a Stripe, não conosco);</li>
+          <li><strong>Google</strong> — se você optar por login com Google (autenticação) ou usarmos fontes do Google Fonts (só carregamento de fonte, sem dado pessoal enviado);</li>
+          <li><strong>Provedor de IA (Google Gemini)</strong> — recebe só fatos já calculados (ex: "aparelho X consome Y kWh") pra transformar em texto de recomendação — nunca recebe seu nome, e-mail ou dado de fatura diretamente;</li>
+          <li><strong>Provedor de e-mail</strong> — envio dos e-mails operacionais mencionados na seção 3.</li>
+        </ul>
+        <p class="body-md">Não compartilhamos seus dados com anunciantes nem com outros terceiros além dos listados acima.</p>
+
+        <h2 class="headline-md">6. Por quanto tempo guardamos seus dados</h2>
+        <p class="body-md">Enquanto sua conta existir. Se você solicitar a exclusão da conta, apagamos seus dados pessoais e de uso, salvo o que formos legalmente obrigados a manter (por exemplo, registros fiscais de pagamento). O histórico de consumo disponível na tela pode ser limitado pelo seu plano (Free tem um histórico mais curto que o Premium), mas isso é um limite de visualização, não de retenção.</p>
+
+        <h2 class="headline-md">7. Seus direitos (Art. 18 da LGPD)</h2>
+        <p class="body-md">Você tem direito a:</p>
+        <ul class="body-md">
+          <li><strong>Acessar</strong> os dados que temos sobre você;</li>
+          <li><strong>Corrigir</strong> dados incompletos ou desatualizados — direto na tela de <a href="dados-pessoais" class="link-inline">Dados Pessoais</a> pra nome/e-mail, ou nas telas de Residências/Aparelhos pro resto;</li>
+          <li><strong>Excluir</strong> seus dados e sua conta;</li>
+          <li><strong>Portar</strong> seus dados pra outro serviço, num formato estruturado;</li>
+          <li><strong>Revogar consentimento</strong> dado anteriormente (ex: desvincular login do Google).</li>
+        </ul>
+        <p class="body-md">Pra exercer qualquer um desses direitos que não tem um botão direto no app, escreva pra <a href="mailto:privacidade@energycalc.com">privacidade@energycalc.com</a>.</p>
+
+        <h2 class="headline-md">8. Segurança</h2>
+        <p class="body-md">Sua senha é armazenada com hash bcrypt (nunca em texto puro — nem nós conseguimos ver sua senha). O acesso à API é protegido por token JWT. Dado de cartão de pagamento nunca passa pelos nossos servidores, fica inteiramente com a Stripe.</p>
+
+        <h2 class="headline-md">9. Cookies</h2>
+        <p class="body-md">Veja a <a href="politica-cookies" class="link-inline">Política de Cookies</a> em separado — o app em si não usa cookies (login usa armazenamento local do navegador), só uma ferramenta interna técnica os usa.</p>
+
+        <h2 class="headline-md">10. Menores de idade</h2>
+        <p class="body-md">O EnergyCalc não é direcionado a menores de 18 anos e não coletamos intencionalmente dados de crianças ou adolescentes.</p>
+
+        <h2 class="headline-md">11. Alterações nesta política</h2>
+        <p class="body-md">Podemos atualizar esta política conforme o EnergyCalc evolui. A data no topo desta página sempre indica a versão mais recente.</p>
+
+        <h2 class="headline-md">12. Contato</h2>
+        <p class="body-md">Dúvidas sobre privacidade ou pra exercer seus direitos LGPD: <a href="mailto:privacidade@energycalc.com">privacidade@energycalc.com</a>.</p>
+      </div>
+
+      <p class="politica-aviso">Este documento foi redigido como um modelo de boa-fé, descrevendo com precisão o que o EnergyCalc realmente coleta e faz com os dados hoje (auditado diretamente no código, não copiado de um modelo genérico) — mas não é, e não substitui, aconselhamento jurídico. Recomenda-se revisão por um advogado especializado em LGPD antes de qualquer uso em produção com usuários reais.</p>
+
+      <p class="caption texto-secundario mt-lg" style="text-align:center;">
+        <a href="/" class="link-inline forte">Voltar para a página inicial</a>
+      </p>
+    </section>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/layout.js"></script>
+  <script>
+    carregarLayoutPublico();
+  </script>
+</body>
+</html>

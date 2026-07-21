@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Meu perfil — EnergyCalc</title>
+  <meta name="theme-color" content="#006b2c" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/componentes.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+</head>
+<body>
+  <header class="app-bar">
+    <a href="dashboard" class="app-bar-logo">
+      <img src="icons/icon-192.png" alt="" width="28" height="28" />
+      EnergyCalc
+    </a>
+    <button class="btn-icone" aria-label="Configurações" onclick="mostrarToast('Ajustes avançados em breve.')">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" /></svg>
+    </button>
+  </header>
+
+  <main class="pagina container" style="text-align:center;">
+    <div class="perfil-avatar-wrap mt-lg">
+      <div class="avatar-grande" id="avatar-grande-iniciais">--</div>
+      <button class="avatar-editar" aria-label="Editar foto" onclick="mostrarToast('Upload de foto em breve.')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z" /></svg>
+      </button>
+    </div>
+    <h1 class="headline-md mt-lg" id="perfil-nome-grande">—</h1>
+    <p class="perfil-email" id="perfil-email-grande">—</p>
+
+    <div class="card mt-lg" style="text-align:left;">
+      <div class="flex justify-between items-center">
+        <span class="badge" id="perfil-badge-plano">—</span>
+        <a href="assinatura" class="link-inline forte">Gerenciar</a>
+      </div>
+      <p class="caption mt-lg" id="perfil-renovacao"></p>
+    </div>
+
+    <p class="secao-titulo" style="text-align:left;">Minha conta</p>
+    <div class="lista-config">
+      <a href="dados-pessoais" class="linha-config">
+        <span class="linha-config-icone">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4" /><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1" /></svg>
+        </span>
+        <span class="linha-config-label">Dados Pessoais</span>
+        <span class="linha-config-seta">›</span>
+      </a>
+      <a href="residencias" class="linha-config">
+        <span class="linha-config-icone">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11z" /><circle cx="12" cy="10" r="2.5" /></svg>
+        </span>
+        <span class="linha-config-label">Endereços (Unidades Consumidoras)</span>
+        <span class="linha-config-seta">›</span>
+      </a>
+      <a href="metodos-pagamento" class="linha-config">
+        <span class="linha-config-icone">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2" /><path d="M2 10h20" /></svg>
+        </span>
+        <span class="linha-config-label">Métodos de Pagamento</span>
+        <span class="linha-config-seta">›</span>
+      </a>
+    </div>
+
+    <p class="secao-titulo" style="text-align:left;">Preferências</p>
+    <div class="lista-config">
+      <div class="linha-config">
+        <span class="linha-config-icone">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6" /><path d="M10 20a2 2 0 0 0 4 0" /></svg>
+        </span>
+        <span class="linha-config-label">Notificações</span>
+        <label class="toggle">
+          <input type="checkbox" id="toggle-notificacoes" />
+          <span class="toggle-track"></span>
+        </label>
+      </div>
+      <div class="linha-config">
+        <span class="linha-config-icone">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" /></svg>
+        </span>
+        <span class="linha-config-label">Modo Escuro</span>
+        <label class="toggle">
+          <input type="checkbox" id="toggle-modo-escuro" />
+          <span class="toggle-track"></span>
+        </label>
+      </div>
+    </div>
+
+    <p class="secao-titulo" style="text-align:left;">Suporte &amp; legal</p>
+    <div class="lista-config">
+      <a href="central-ajuda" class="linha-config">
+        <span class="linha-config-label">Central de Ajuda</span>
+        <span class="linha-config-icone" style="background:transparent;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" /><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.5-2 1.8-2 3.5" /><path d="M12 17h.01" /></svg>
+        </span>
+      </a>
+      <a href="termos-uso" class="linha-config">
+        <span class="linha-config-label">Termos de Uso</span>
+        <span class="linha-config-icone" style="background:transparent;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M6 3h8l5 5v12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" /></svg>
+        </span>
+      </a>
+      <a href="politica-privacidade" class="linha-config">
+        <span class="linha-config-label">Política de Privacidade</span>
+        <span class="linha-config-icone" style="background:transparent;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.4-3 7.9-7 9-4-1.1-7-4.6-7-9V6z" /></svg>
+        </span>
+      </a>
+    </div>
+
+    <button class="btn btn-danger-outline btn-block mt-lg" onclick="logout()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h4" /><path d="M16 17l5-5-5-5" /><path d="M21 12H9" /></svg>
+      Sair da Conta
+    </button>
+
+    <p class="caption mt-lg" style="opacity:0.6;">EnergyCalc v1.0.0 — Sustentabilidade em cada clique.</p>
+  </main>
+
+  <div id="bottom-nav"></div>
+  <div id="modal-upgrade-slot"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/paginas/perfil.js"></script>
+  <script>
+    carregarLayoutAutenticado("perfil");
+    inicializarPerfil();
+  </script>
+</body>
+</html>

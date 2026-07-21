@@ -1,0 +1,1896 @@
+/* Componentes — seção "Components" do DESIGN-APP.MD. Slate 100/200 não
+   estão nos tokens de cor exportados, aproximados por outline-variant /
+   surface-container-high (neutros claros mais próximos disponíveis). */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: 12px var(--space-lg);
+  border-radius: var(--radius-default);
+  border: none;
+  font-size: var(--label-md-size);
+  font-weight: 600;
+  letter-spacing: var(--label-md-tracking);
+  transition: box-shadow 0.15s ease, transform 0.05s ease;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.btn-primary:hover {
+  box-shadow: var(--shadow-1);
+}
+
+.btn-secondary {
+  background: var(--surface-container-high);
+  color: var(--on-surface);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--secondary);
+}
+
+.btn-danger {
+  background: var(--error-container);
+  color: var(--on-error-container);
+}
+
+.btn-outline-primary {
+  background: transparent;
+  color: var(--primary);
+  border: 1.5px solid var(--primary);
+}
+
+.btn-branco {
+  background: var(--surface-container-lowest);
+  color: var(--primary);
+}
+
+.btn-escuro {
+  background: var(--inverse-surface);
+  color: var(--inverse-on-surface);
+}
+
+.btn-outline-neutro {
+  background: var(--surface-container-high);
+  color: var(--on-surface);
+}
+
+.btn-texto-perigo {
+  background: transparent;
+  border: none;
+  color: var(--error);
+  font-weight: 600;
+  padding: var(--space-sm);
+}
+
+.btn-sm {
+  padding: 8px var(--space-md);
+}
+
+.btn-lg {
+  padding: 16px var(--space-lg);
+  font-size: var(--body-md-size);
+}
+
+.btn-block {
+  display: flex;
+  width: 100%;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Cards — brancas, 12px, Level 1, sem header colorido. */
+.card {
+  background: var(--surface-container-lowest);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-1);
+  padding: var(--space-lg);
+}
+
+.card-title {
+  font-size: var(--label-md-size);
+  font-weight: 600;
+  color: var(--on-surface-variant);
+  margin-bottom: var(--space-sm);
+}
+
+.card-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--on-surface);
+}
+
+.card-value.positivo {
+  color: var(--primary);
+}
+
+/* Campos de formulário */
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-md);
+}
+
+.campo label {
+  font-size: var(--label-md-size);
+  font-weight: 500;
+  color: var(--on-surface-variant);
+}
+
+.campo input,
+.campo select,
+.campo textarea {
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-default);
+  padding: 12px var(--space-md);
+  background: var(--surface-container-lowest);
+  color: var(--on-surface);
+}
+
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus {
+  outline: none;
+  border-color: var(--secondary);
+  box-shadow: 0 0 0 3px rgba(0, 81, 213, 0.15);
+}
+
+.campo .erro-campo {
+  color: var(--error);
+  font-size: var(--caption-size);
+}
+
+/* Chips — pill, verde claro/escuro no estado ativo. */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px var(--space-md);
+  border-radius: var(--radius-full);
+  font-size: var(--caption-size);
+  font-weight: 500;
+  background: var(--surface-container);
+  color: var(--on-surface-variant);
+}
+
+.chip.ativo {
+  background: var(--primary-fixed, #7ffc97);
+  color: var(--on-primary-fixed, #002109);
+}
+
+.chip.alerta {
+  background: var(--error-container);
+  color: var(--on-error-container);
+}
+
+/* Abas (usado em aparelhos.html) */
+.abas {
+  display: flex;
+  gap: var(--space-sm);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-padding: var(--space-margin-mobile);
+  border-bottom: 1px solid var(--outline-variant);
+  margin-bottom: var(--space-lg);
+  padding-bottom: 2px;
+  scroll-snap-type: x mandatory;
+}
+
+.aba {
+  position: relative;
+  flex: none;
+  scroll-snap-align: start;
+  padding: var(--space-sm) var(--space-md);
+  border: none;
+  background: transparent;
+  color: var(--on-surface-variant);
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.aba:hover {
+  background: rgba(0, 107, 44, 0.05);
+  color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.aba.ativa {
+  color: var(--primary);
+  background: rgba(0, 107, 44, 0.08);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.abas {
+  position: relative;
+}
+
+.abas-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  width: 0;
+  background: var(--primary);
+  border-radius: var(--radius-full);
+  transition: transform 0.25s ease, width 0.25s ease;
+}
+
+/* Modal / bottom sheet */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(19, 27, 46, 0.5);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 100;
+}
+
+@media (min-width: 768px) {
+  .modal-overlay {
+    align-items: center;
+  }
+}
+
+.modal {
+  background: var(--surface-container-lowest);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  padding: var(--space-xl) var(--space-lg);
+  width: 100%;
+  max-width: 480px;
+  box-shadow: var(--shadow-2);
+}
+
+@media (min-width: 768px) {
+  .modal {
+    border-radius: var(--radius-lg);
+  }
+}
+
+.modal-hidden {
+  display: none;
+}
+
+.modal-confirmar {
+  text-align: center;
+}
+
+.modal-confirmar-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto var(--space-lg);
+  border-radius: var(--radius-full);
+  background: var(--error-container);
+  color: var(--error);
+}
+
+/* Variantes de cor — o vermelho acima é certo pra exclusão (modal-confirmar
+   original), mas errado pra qualquer outro uso desse mesmo card de ícone
+   circular (avisos neutros, boas-vindas). Sem isso um modal de cookies ou
+   de boas-vindas herdava o vermelho de "isto vai apagar algo". */
+.modal-confirmar-icone.icone-neutro {
+  background: var(--surface-container-high);
+  color: var(--on-surface-variant);
+}
+
+.modal-confirmar-icone.icone-positivo {
+  background: #e8f5e9;
+  color: var(--primary);
+}
+
+.lista-onboarding {
+  text-align: left;
+  padding-left: var(--space-lg);
+  color: var(--on-surface-variant);
+}
+
+.lista-onboarding li {
+  margin-bottom: var(--space-sm);
+}
+
+.lista-onboarding li:last-child {
+  margin-bottom: 0;
+}
+
+.lista-onboarding strong {
+  color: var(--on-surface);
+}
+
+/* Modal de progresso (ex.: envio de fatura) — mesma base do modal-confirmar,
+   ícone neutro em vez do vermelho de exclusão, e entra com uma animação
+   sutil já que é acionado por uma ação que "não pode passar despercebida". */
+#modal-progresso-fatura .modal {
+  animation: subirModalProgresso 0.25s ease;
+}
+
+@keyframes subirModalProgresso {
+  from { transform: translateY(24px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-progresso-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto var(--space-lg);
+  border-radius: var(--radius-full);
+  background: var(--surface-container);
+  color: var(--primary);
+}
+
+.modal-progresso-icone-sucesso {
+  background: #e8f5e9;
+  animation: aparecerSucessoProgresso 0.3s ease;
+}
+
+@keyframes aparecerSucessoProgresso {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.spinner-grande {
+  width: 28px;
+  height: 28px;
+  border-width: 3px;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(72px + var(--space-md));
+  transform: translateX(-50%);
+  background: var(--inverse-surface);
+  color: var(--inverse-on-surface);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--radius-default);
+  box-shadow: var(--shadow-2);
+  z-index: 200;
+  font-size: var(--label-md-size);
+}
+
+.toast.erro {
+  background: var(--error);
+  color: var(--on-error);
+}
+
+/* Lista vazia / skeleton simples */
+.estado-vazio {
+  text-align: center;
+  color: var(--on-surface-variant);
+  padding: var(--space-2xl) var(--space-md);
+}
+
+.badge {
+  display: inline-flex;
+  padding: 2px var(--space-sm);
+  border-radius: var(--radius-full);
+  font-size: var(--caption-size);
+  font-weight: 600;
+}
+
+.badge.free {
+  background: var(--surface-container-high);
+  color: var(--on-surface-variant);
+}
+
+.badge.premium {
+  background: var(--primary-fixed, #7ffc97);
+  color: var(--on-primary-fixed, #002109);
+}
+
+.chip-info {
+  background: var(--secondary-container);
+  color: var(--on-secondary-container);
+}
+
+.chip-neutro {
+  background: var(--surface-container-high);
+  color: var(--on-surface-variant);
+}
+
+/* Tela de autenticação (login/cadastro/esqueci/redefinir) — shell
+   centralizado com card, conforme referência de design aprovada. */
+.tela-auth {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl) var(--space-margin-mobile);
+  gap: var(--space-xl);
+}
+
+.auth-cabecalho {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  text-align: center;
+}
+
+.auth-logo {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-sm);
+}
+
+.auth-titulo-app {
+  font-size: var(--headline-md-size);
+  font-weight: 700;
+  color: var(--on-surface);
+}
+
+.auth-tagline {
+  font-size: var(--caption-size);
+  color: var(--on-surface-variant);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 380px;
+}
+
+.link-inline {
+  color: var(--secondary);
+  font-size: var(--caption-size);
+  font-weight: 500;
+}
+
+.link-inline.forte {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.auth-divisor {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin: var(--space-xl) 0 var(--space-lg);
+  color: var(--on-surface-variant);
+  font-size: var(--caption-size);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.auth-divisor::before,
+.auth-divisor::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--outline-variant);
+}
+
+.btn-google {
+  background: var(--surface-container);
+  color: var(--on-surface);
+  border: 1px solid var(--outline-variant);
+  gap: var(--space-sm);
+}
+
+.auth-rodape {
+  display: flex;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+  justify-content: center;
+  color: var(--on-surface-variant);
+}
+
+.auth-rodape a {
+  font-size: var(--caption-size);
+}
+
+/* Spinner de loading — usado em botões de ação enquanto aguardam a API
+   (ver ui.js::comCarregamento). Neon serverless tem cold-start; sem isso
+   um clique parece não fazer nada por alguns segundos. */
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: var(--radius-full);
+  animation: girar 0.7s linear infinite;
+  vertical-align: middle;
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.aba-carregando {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-lg) var(--space-md);
+  border-radius: var(--radius-md);
+  background: var(--surface-container);
+  color: var(--on-surface-variant);
+  font-weight: 500;
+}
+
+/* Tela de Perfil */
+.perfil-avatar-wrap {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  margin: 0 auto;
+}
+
+.avatar-grande {
+  width: 96px;
+  height: 96px;
+  border-radius: var(--radius-full);
+  background: var(--secondary-container);
+  color: var(--on-secondary-container);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: 700;
+  box-shadow: var(--shadow-1);
+}
+
+.avatar-editar {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: var(--primary);
+  color: var(--on-primary);
+  border: 3px solid var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.perfil-email {
+  color: var(--tertiary, var(--on-surface-variant));
+  font-size: var(--label-md-size);
+}
+
+.secao-titulo {
+  font-size: var(--caption-size);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--on-surface-variant);
+  margin: var(--space-lg) 0 var(--space-sm);
+  text-transform: uppercase;
+}
+
+.lista-config {
+  background: var(--surface-container-lowest);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-1);
+  overflow: hidden;
+}
+
+.linha-config {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  border: none;
+  border-bottom: 1px solid var(--outline-variant);
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  color: var(--on-surface);
+}
+
+.linha-config:last-child {
+  border-bottom: none;
+}
+
+.linha-config-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-default);
+  background: var(--surface-container);
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.linha-config-label {
+  flex: 1;
+  font-size: var(--label-md-size);
+  font-weight: 500;
+}
+
+.linha-config-seta {
+  color: var(--on-surface-variant);
+}
+
+/* Toggle switch (Notificações / Modo escuro) */
+.toggle {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-track {
+  position: absolute;
+  inset: 0;
+  background: var(--outline-variant);
+  border-radius: var(--radius-full);
+  transition: background 0.15s ease;
+  cursor: pointer;
+}
+
+.toggle-track::before {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  left: 3px;
+  top: 3px;
+  background: var(--surface-container-lowest);
+  border-radius: var(--radius-full);
+  transition: transform 0.15s ease;
+}
+
+.toggle input:checked + .toggle-track {
+  background: var(--primary);
+}
+
+.toggle input:checked + .toggle-track::before {
+  transform: translateX(20px);
+}
+
+.btn-danger-outline {
+  background: transparent;
+  border: 1px solid var(--error);
+  color: var(--error);
+}
+
+/* Landing page (index.html) */
+.hero-publica {
+  padding-top: var(--space-lg);
+  padding-bottom: var(--space-lg);
+}
+
+.hero-mockup {
+  background: linear-gradient(160deg, var(--surface-container-high), var(--surface-container));
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl) var(--space-lg);
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--space-xl);
+}
+
+.phone-mock {
+  width: 180px;
+  background: var(--inverse-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-sm);
+  box-shadow: var(--shadow-2);
+}
+
+.phone-mock-notch {
+  width: 48px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.25);
+  margin: 0 auto var(--space-sm);
+}
+
+.phone-mock-screen {
+  background: var(--surface-container-lowest);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+}
+
+.phone-mock-label {
+  font-size: var(--caption-size);
+  color: var(--on-surface-variant);
+}
+
+.phone-mock-valor {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--on-surface);
+  margin: 2px 0 var(--space-sm);
+}
+
+.phone-mock-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 56px;
+  margin-bottom: var(--space-sm);
+}
+
+.phone-mock-chart span {
+  flex: 1;
+  height: var(--h);
+  background: var(--primary);
+  border-radius: 3px 3px 0 0;
+  opacity: 0.85;
+}
+
+.phone-mock-stat {
+  font-size: var(--caption-size);
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.hero-titulo {
+  margin-bottom: var(--space-md);
+  text-align: center;
+}
+
+.hero-subtitulo {
+  color: var(--on-surface-variant);
+  margin-bottom: var(--space-lg);
+  text-align: center;
+}
+
+.hero-cta {
+  display: flex;
+  width: 100%;
+}
+
+.grid-beneficios {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.feature-card {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+@media (hover: hover) {
+  .feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-2);
+  }
+}
+
+.feature-icone {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  margin-bottom: var(--space-xs);
+}
+
+.feature-icone-verde {
+  background: var(--primary);
+}
+
+.feature-icone-azul {
+  background: var(--secondary);
+}
+
+.feature-icone-marrom {
+  background: var(--tertiary);
+}
+
+.feature-titulo {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--on-surface);
+}
+
+.card-simulador {
+  background: var(--surface-container-high);
+  box-shadow: none;
+}
+
+.card-simulador > h2 {
+  margin-bottom: var(--space-lg);
+}
+
+.calc-resultado {
+  margin-top: var(--space-lg);
+}
+
+.passos-lista {
+  display: flex;
+  flex-direction: column;
+}
+
+.passo {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.passo-numero-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.passo-numero {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border-radius: var(--radius-full);
+  background: var(--primary);
+  color: var(--on-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: var(--label-md-size);
+}
+
+.passo-linha {
+  flex: 1;
+  width: 2px;
+  min-height: var(--space-md);
+  background: var(--outline-variant);
+  margin: var(--space-xs) 0;
+}
+
+.passo:last-child .passo-linha {
+  display: none;
+}
+
+.passo-texto {
+  padding-bottom: var(--space-lg);
+}
+
+.passo-texto .feature-titulo {
+  margin-bottom: var(--space-xs);
+}
+
+.grid-planos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.plano-card {
+  position: relative;
+  text-align: left;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+@media (hover: hover) {
+  .plano-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-2);
+  }
+}
+
+.plano-badge-popular {
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  background: var(--surface-container-lowest);
+  color: var(--primary);
+  font-size: var(--caption-size);
+  font-weight: 700;
+  padding: 2px var(--space-sm);
+  border-radius: var(--radius-full);
+}
+
+.plano-card-premium {
+  background: var(--primary);
+}
+
+.plano-nome {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--on-surface);
+  margin-bottom: var(--space-xs);
+}
+
+.plano-preco {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--on-surface);
+  margin-bottom: var(--space-md);
+}
+
+.plano-periodo {
+  font-size: var(--label-md-size);
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.plano-lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+}
+
+.plano-lista li {
+  font-size: var(--label-md-size);
+  color: var(--on-surface-variant);
+}
+
+.plano-card-premium .plano-nome,
+.plano-card-premium .plano-preco,
+.plano-card-premium .plano-lista li {
+  color: var(--on-primary);
+}
+
+.plano-card-premium .plano-lista li {
+  opacity: 0.95;
+}
+
+.depoimentos-scroll {
+  display: flex;
+  gap: var(--space-md);
+  overflow-x: auto;
+  padding: 0 var(--space-margin-mobile) var(--space-sm);
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.depoimento-card {
+  min-width: 260px;
+  max-width: 260px;
+  scroll-snap-align: start;
+  flex-shrink: 0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+@media (hover: hover) {
+  .depoimento-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-2);
+  }
+}
+
+.depoimento-card p.body-md {
+  font-style: italic;
+  color: var(--on-surface);
+  margin-bottom: var(--space-md);
+}
+
+.depoimento-autor {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.avatar-depoimento {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--caption-size);
+  font-weight: 700;
+  color: #fff;
+}
+
+.avatar-depoimento.cor-1 {
+  background: var(--primary);
+}
+
+.avatar-depoimento.cor-2 {
+  background: var(--secondary);
+}
+
+.avatar-depoimento.cor-3 {
+  background: var(--tertiary);
+}
+
+.faq-lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.faq-item {
+  background: var(--surface-container-high);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.faq-pergunta {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: transparent;
+  border: none;
+  text-align: left;
+  font-size: var(--label-md-size);
+  font-weight: 600;
+  color: var(--on-surface);
+}
+
+.faq-seta {
+  transition: transform 0.2s ease;
+  color: var(--on-surface-variant);
+  flex-shrink: 0;
+}
+
+.faq-item.aberto .faq-seta {
+  transform: rotate(180deg);
+}
+
+.faq-resposta {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease;
+}
+
+.faq-item.aberto .faq-resposta {
+  max-height: 240px;
+}
+
+.faq-resposta p {
+  padding: 0 var(--space-md) var(--space-md);
+}
+
+.cta-final {
+  background: var(--primary);
+  padding: var(--space-2xl) 0;
+  margin-top: var(--space-xl);
+}
+
+.cta-final-titulo {
+  color: var(--on-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.cta-final-texto {
+  color: var(--on-primary);
+  opacity: 0.9;
+  margin-bottom: var(--space-lg);
+}
+
+/* Rodapé da landing — banda separada com fundo levemente diferente e borda,
+   pra não parecer que o link de política ficou esquecido colado embaixo do
+   bloco verde do CTA (era exatamente esse o problema antes disso existir:
+   um <a> sozinho, sem respiro nenhum, direto abaixo de uma seção bem
+   carregada visualmente). */
+.rodape-landing {
+  padding: var(--space-2xl) 0;
+  background: var(--surface-container-low);
+  border-top: 1px solid var(--outline-variant);
+}
+
+.rodape-landing .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  text-align: center;
+}
+
+.rodape-landing-marca {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.rodape-landing-marca img {
+  border-radius: var(--radius-sm);
+}
+
+.rodape-landing-links {
+  display: flex;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.rodape-landing-links a {
+  font-size: var(--label-md-size);
+  color: var(--on-surface-variant);
+}
+
+.rodape-landing-links a:hover {
+  color: var(--primary);
+}
+
+/* Landing (index.html) — responsividade pra telas maiores. O resto do app
+   é deliberadamente mobile-first e fica travado em 720px (ver CLAUDE.md);
+   a landing pública é a exceção, já que costuma ser vista em desktop antes
+   de o usuário nem ter decidido instalar o app. `.container`/`.nav-publica`
+   fora daqui continuam 720px (fica bom em qualquer tela até aqui) — só
+   alargam a partir de 1024px, e cada seção ganha seu próprio tratamento de
+   grid/coluna no lugar de ficar empilhada como no mobile.
+   Ordem mobile-first importa aqui: 640px vem antes de 1024px no arquivo de
+   propósito — os dois blocos miram `.grid-beneficios` com a mesma
+   especificidade, então em telas ≥1024px o de 1024px (por vir depois)
+   pisa no `auto-fit` do bloco de 640px, sempre forçando 3 colunas em vez de
+   deixar o número de colunas flutuar conforme a largura exata. */
+@media (min-width: 640px) {
+  .grid-beneficios,
+  .grid-planos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--space-lg);
+    align-items: start;
+  }
+}
+
+@media (min-width: 1024px) {
+  .pagina.publica .container,
+  .nav-publica {
+    max-width: 1100px;
+  }
+
+  .pagina.publica .secao {
+    margin-bottom: var(--space-2xl);
+  }
+
+  .hero-publica .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: var(--space-2xl);
+  }
+
+  .hero-publica .hero-mockup {
+    margin-bottom: 0;
+    order: 2;
+  }
+
+  .hero-publica .hero-texto {
+    order: 1;
+  }
+
+  .hero-publica .hero-titulo,
+  .hero-publica .hero-subtitulo {
+    text-align: left;
+  }
+
+  .hero-publica .hero-cta {
+    display: inline-flex;
+    width: auto;
+    padding-left: var(--space-xl);
+    padding-right: var(--space-xl);
+  }
+
+  .grid-beneficios {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .depoimentos-scroll {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    overflow: visible;
+    padding: 0;
+  }
+
+  .depoimento-card {
+    min-width: 0;
+    max-width: none;
+  }
+
+  /* Texto corrido fica mais legível numa coluna mais estreita mesmo dentro
+     de um container largo — não faz sentido esticar até 1100px. */
+  .pagina.publica .cta-final .container,
+  .passos-lista,
+  .faq-lista {
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* Aparelhos — lista */
+.banner-limite {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background: var(--tertiary);
+  color: var(--on-tertiary);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+}
+
+.banner-limite-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.25);
+  font-size: var(--caption-size);
+  font-weight: 700;
+  font-style: italic;
+}
+
+.banner-limite-texto {
+  flex: 1;
+  font-size: var(--label-md-size);
+}
+
+.aparelho-card {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-md);
+  min-height: 240px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.aparelho-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-2);
+}
+
+.aparelho-card-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: rgba(0, 107, 44, 0.1);
+  color: var(--primary);
+}
+
+.aparelho-card-nome {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--on-surface);
+  margin-top: var(--space-sm);
+  line-height: 1.2;
+}
+
+.aparelho-card-linha {
+  border: none;
+  border-top: 1px solid var(--outline-variant);
+  margin: var(--space-sm) 0;
+}
+
+.aparelho-card-rodape {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-sm);
+}
+
+.aparelho-card-rodape > div {
+  min-width: 0;
+  flex: 1 1 0;
+}
+
+.aparelho-card-rodape p {
+  margin: 0;
+}
+
+.aparelho-card-rodape .caption {
+  font-size: 12px;
+  line-height: 1.3;
+  color: var(--on-surface-variant);
+  opacity: 0.82;
+  margin-bottom: 0.25rem;
+}
+
+.aparelho-card-rodape .aparelho-card-valor {
+  margin-top: 0;
+  display: block;
+  line-height: 1.2;
+  color: var(--on-surface);
+}
+
+.aparelho-card-valor {
+  font-size: var(--label-md-size);
+  font-weight: 700;
+}
+
+.aparelho-card-valor-verde {
+  color: var(--primary);
+}
+
+.aparelho-card-valor-azul {
+  color: var(--secondary);
+}
+
+.lista-aparelhos-grid {
+  display: grid;
+  gap: var(--space-md);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .lista-aparelhos-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .lista-aparelhos-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.banner-limite {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  background: var(--tertiary);
+  color: var(--on-tertiary);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+}
+
+.card-novo-aparelho {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  gap: 16px;
+  padding: var(--space-lg);
+  border: 2px dashed var(--primary);
+  border-radius: var(--radius-md);
+  background: var(--surface-container-low);
+  min-height: 220px;
+}
+
+.card-novo-aparelho-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  background: var(--primary);
+  color: var(--on-primary);
+  font-size: 28px;
+  font-weight: 400;
+  margin-bottom: var(--space-xs);
+}
+
+/* Aparelhos — nova tela (novo_aparelho.html) */
+.novo-aparelho-cabecalho {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+  margin: var(--space-lg) 0;
+}
+
+.novo-aparelho-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-full);
+  background: var(--primary);
+  color: var(--on-primary);
+  font-size: 30px;
+  margin-bottom: var(--space-sm);
+}
+
+.toggle-modo-potencia {
+  display: flex;
+  gap: 4px;
+  background: var(--surface-container-high);
+  border-radius: var(--radius-default);
+  padding: 4px;
+}
+
+.toggle-modo-btn {
+  flex: 1;
+  padding: var(--space-sm);
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--on-surface-variant);
+  font-size: var(--caption-size);
+  font-weight: 600;
+  text-align: center;
+}
+
+.toggle-modo-btn.ativo {
+  background: var(--surface-container-lowest);
+  color: var(--primary);
+  box-shadow: var(--shadow-1);
+}
+
+.campo-slider label {
+  display: flex;
+  justify-content: space-between;
+}
+
+.slider-valor {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+input[type="range"] {
+  width: 100%;
+  height: 20px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  margin-top: var(--space-xs);
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: var(--radius-full);
+  background: var(--outline-variant);
+}
+
+input[type="range"]::-moz-range-track {
+  height: 4px;
+  border-radius: var(--radius-full);
+  background: var(--outline-variant);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: var(--radius-full);
+  background: var(--primary);
+  border: 3px solid var(--surface-container-lowest);
+  box-shadow: var(--shadow-1);
+  margin-top: -7px;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: var(--radius-full);
+  background: var(--primary);
+  border: 3px solid var(--surface-container-lowest);
+  box-shadow: var(--shadow-1);
+}
+
+.dica-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  background: linear-gradient(135deg, var(--surface-container-high), var(--surface-container));
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  margin-top: var(--space-lg);
+}
+
+.dica-card-titulo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-weight: 700;
+  color: var(--on-surface);
+}
+
+/* Assinatura (assinatura.html) */
+.card-assinatura {
+  text-align: left;
+  background: var(--surface-container-low);
+  box-shadow: none;
+}
+
+.card-assinatura-plano {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary);
+  margin: var(--space-md) 0 var(--space-xs);
+}
+
+.card-assinatura-renovacao {
+  color: var(--on-surface-variant);
+  margin-bottom: var(--space-md);
+}
+
+.card-assinatura-preco {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--on-surface);
+  margin-bottom: var(--space-lg);
+}
+
+.card-assinatura-preco .plano-periodo {
+  font-size: var(--label-md-size);
+  font-weight: 500;
+  color: var(--on-surface-variant);
+}
+
+.info-metodo-pagamento {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: var(--surface-container-lowest);
+  border-radius: var(--radius-default);
+  margin-bottom: var(--space-md);
+}
+
+.info-metodo-pagamento-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-default);
+  background: var(--surface-container-high);
+  color: var(--secondary);
+  flex-shrink: 0;
+}
+
+.pagamento-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.pagamento-item-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-default);
+  background: rgba(0, 107, 44, 0.1);
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.pagamento-item-info {
+  flex: 1;
+}
+
+.pagamento-item-valor {
+  text-align: right;
+}
+
+.card-historico-summary,
+.card-historico-item {
+  background: var(--surface-container-low);
+  border: 1px solid var(--outline-variant);
+  box-shadow: none;
+  padding: var(--space-lg);
+}
+
+.card-historico-item {
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-md);
+  gap: var(--space-sm);
+}
+
+.card-historico-item .card-historico-top {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.card-historico-item .card-historico-top .card-fatura-icone-analisada,
+.card-historico-item .card-historico-top .card-fatura-icone-processamento {
+  width: 36px;
+  height: 36px;
+}
+
+/* Consumo / Valor Total / Tarifa lado a lado em vez de empilhados — era o
+   que mais inflava a altura do card sem agregar informação (cada um só
+   tem um número e um rótulo curto, cabem numa linha só). */
+.card-historico-stats-row {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.card-historico-stats-row .card-historico-group {
+  flex: 1;
+}
+
+.card-historico-summary {
+  border-radius: var(--radius-md);
+}
+
+.card-historico-summary + .card-historico-summary,
+#lista-historico .card-historico-item {
+  width: 100%;
+}
+
+/* Faturas (Histórico de Faturas) */
+.badge-status-analisada {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: var(--radius-full);
+  background: #e8f5e9;
+  color: var(--primary);
+  font-size: var(--caption-size);
+  font-weight: 600;
+}
+
+.badge-status-processamento {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: var(--radius-full);
+  background: #e3f2fd;
+  color: var(--secondary);
+  font-size: var(--caption-size);
+  font-weight: 600;
+}
+
+.card-fatura-icone-analisada {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #e8f5e9;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.card-fatura-icone-processamento {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #e3f2fd;
+  color: var(--secondary);
+  flex-shrink: 0;
+}
+
+.btn-ver-detalhes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-top: 1px solid var(--outline-variant);
+  border-bottom: 1px solid var(--outline-variant);
+  padding: var(--space-sm) 0;
+  color: var(--primary);
+  font-size: var(--caption-size);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-ver-detalhes .icone-chevron {
+  transition: transform 0.2s ease;
+}
+
+.btn-ver-detalhes.aberto .icone-chevron {
+  transform: rotate(180deg);
+}
+
+/* Colapsa via grid-template-rows (0fr -> 1fr) em vez de max-height: anima
+   suavemente sem precisar calcular a altura real do conteúdo em JS. */
+.detalhes-fatura-collapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.25s ease;
+}
+
+.detalhes-fatura-collapse.aberto {
+  grid-template-rows: 1fr;
+}
+
+.detalhes-fatura-collapse > div {
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* Campos sensíveis (UC, número do cliente) — mascarados por padrão, com
+   botão de olho pra revelar sob demanda. */
+.campo-mascarado {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dado-sensivel {
+  letter-spacing: 1px;
+}
+
+.btn-olho {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 2px;
+  margin: 0;
+  color: var(--on-surface-variant);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.btn-olho:hover {
+  color: var(--primary);
+}
+
+/* Rótulo técnico da fatura (UC, TUSD, ICMS...) + botão de info — clique
+   revela uma explicação curta logo abaixo, dentro do fluxo normal (não é
+   um popover flutuante: o painel de "Ver detalhes" tem overflow:hidden pra
+   animar o abrir/fechar, e cortaria qualquer coisa posicionada por fora). */
+.campo-label-info {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-info {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  color: var(--on-surface-variant);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.btn-info:hover {
+  color: var(--primary);
+}
+
+.texto-info-campo {
+  display: none;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--on-surface-variant);
+  background: var(--surface-container);
+  border-radius: var(--radius-sm);
+  padding: 6px 8px;
+  margin: 4px 0 0;
+}
+
+.texto-info-campo.visivel {
+  display: block;
+}
+
+.fab {
+  position: fixed;
+  bottom: calc(72px + var(--space-md));
+  right: var(--space-margin-mobile);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: var(--on-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-2);
+  z-index: 40;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.fab:hover {
+  transform: translateY(-2px);
+  box-shadow: 0px 12px 20px -5px rgba(15, 23, 42, 0.15);
+}
+.fab:active {
+  transform: translateY(1px);
+}
+
+/* Tela Enviar Fatura */
+.card-concessionaria {
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  text-align: center;
+  cursor: pointer;
+  background: var(--surface-container-low);
+  transition: all 0.2s ease;
+  flex: 1;
+}
+.card-concessionaria.ativo {
+  border-color: var(--primary);
+  background: #e8f5e9;
+}
+.card-concessionaria-icone {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #e3f2fd;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--space-sm);
+}
+
+.upload-area {
+  border: 2px dashed #b0bec5;
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl) var(--space-md);
+  text-align: center;
+  transition: all 0.2s ease;
+  background: var(--surface-container-low);
+}
+.upload-area.dragover {
+  border-color: var(--primary);
+  background: #e8f5e9;
+}
+
+.vantagem-item {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+.vantagem-icone {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: #dcede3;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.banner-seguranca {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  height: 120px;
+  background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1544725121-be3bf52e2dc8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80') center/cover;
+  display: flex;
+  align-items: flex-end;
+  padding: var(--space-md);
+}

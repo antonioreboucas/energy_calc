@@ -1,0 +1,125 @@
+/* Inter via CDN — sem woff2 self-hosted disponível; system-ui cobre o caso
+   offline (ver --font-base em tokens.css). */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-base);
+  font-size: var(--body-md-size);
+  font-weight: var(--body-md-weight);
+  line-height: var(--body-md-line);
+  color: var(--on-surface);
+  background: var(--background);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+figure {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+select,
+textarea,
+button {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+h1,
+.headline-lg {
+  font-size: var(--headline-lg-mobile-size);
+  font-weight: var(--headline-lg-mobile-weight);
+  line-height: var(--headline-lg-mobile-line);
+  letter-spacing: var(--headline-lg-mobile-tracking);
+}
+
+@media (min-width: 768px) {
+  h1,
+  .headline-lg {
+    font-size: var(--headline-lg-size);
+    line-height: var(--headline-lg-line);
+    letter-spacing: var(--headline-lg-tracking);
+  }
+}
+
+h2,
+.headline-md {
+  font-size: var(--headline-md-size);
+  font-weight: var(--headline-md-weight);
+  line-height: var(--headline-md-line);
+}
+
+.label-md {
+  font-size: var(--label-md-size);
+  font-weight: var(--label-md-weight);
+  line-height: var(--label-md-line);
+  letter-spacing: var(--label-md-tracking);
+}
+
+.caption {
+  font-size: var(--caption-size);
+  font-weight: var(--caption-weight);
+  line-height: var(--caption-line);
+  color: var(--on-surface-variant);
+}
+
+.texto-centro {
+  text-align: center;
+}
+
+.texto-secundario {
+  color: var(--on-surface-variant);
+}
+
+.forte {
+  font-weight: 700;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
