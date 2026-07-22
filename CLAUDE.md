@@ -67,7 +67,7 @@ frontend/app/
   index.html, login.html, cadastro.html,
   esqueci-senha.html, redefinir-senha.html, verificar-email.html   → public/auth (no login required)
   dashboard.html, residencias.html, aparelhos.html, novo_aparelho.html,
-  historico.html, metas.html, recomendacoes.html, assinatura.html,
+  historico.html, metas.html, recomendacoes.html, insights.html, assinatura.html,
   perfil.html                                                       → authenticated (call exigirLogin())
   router.php            → extension-less URL → static .html resolver, subfolder-aware (see below)
   .htaccess             → only needed for Apache/XAMPP serving, not `php -S` — routes everything
@@ -640,6 +640,227 @@ frontend/app/
     jsdom's own `Window.js`, before any app code runs) — fixed by passing `url: "http://localhost/"`
     to the `JSDOM` constructor in the test file. Also confirmed served correctly over real HTTP via
     Apache (`curl` for both `js/ui.js` and `css/componentes.css`, 200 + new content present in both).
+- **Resolved**: `dashboard.html`'s "Gastos Mensais" chart (`renderizarGraficoGastos()` in
+  `dashboard.js`) technically already received the real Fatura value every month it existed —
+  `gastos_mensais` reuses the same `agregados_reais_e_simulados()`-backed `evolucao_mensal()` data
+  that prioritizes `Fatura.valor_total` over the calculated estimate — but the chart never surfaced
+  it: the Y-axis was hidden (`display: false`, "como no mockup"), there was no tooltip formatting,
+  and **11 of 12 bars were `background: transparent`** (only the current month had a visible fill),
+  so in practice almost no monthly value was ever actually visible on screen. Fixed without any
+  backend change, since the `origem` field per month was already in the response and simply unused:
+  - Every bar is now visible and colored by `origem` — solid `COR_AZUL` (`#0051d5`) for a month
+    backed by a real Fatura, a lighter `#dae2fd` for a calculated/estimated month — reusing the same
+    two-tier real/estimado language as the badges elsewhere (dashboard cards, `historico.js`).
+  - Added a tooltip callback: hovering a bar shows `formatarMoeda(custo)` plus "Fatura real" or
+    "Estimado", e.g. `"R$ 245,30 — Fatura real"`. The Y-axis stays hidden — that was a deliberate,
+    already-commented mockup-fidelity choice, not an oversight, so it wasn't reversed; the tooltip
+    is the least invasive way to make the number available on demand without cluttering that look.
+  - Added a `legenda-html`/`legenda-item` legend row (same markup pattern "Evolução Mensal" already
+    uses) above the chart with the two swatches, since color-coding bars by origem is meaningless
+    without a key — new `.bg-azul`/`.bg-azul-claro` classes added next to the existing
+    `.bg-primaria`/`.bg-secundaria` in `dashboard.html`'s page-scoped `<style>` block.
+  - Verified with jsdom against the real `dashboard.js`, stubbing only the `Chart` constructor
+    itself (jsdom has no real `<canvas>` 2D context) to capture the config object — asserts on
+    `backgroundColor` per bar and on the tooltip callback's returned string for both a `"real"` and
+    a `"simulada"` item, plus the empty-state path and that the legend/CSS/link additions in
+    `dashboard.html` are all present and correctly wired. One test-only gotcha hit along the way:
+    `Number.prototype.toLocaleString('pt-BR', {style:'currency',...})` inserts a *non-breaking*
+    space (` `) after `"R$"`, not a regular one — not a bug, just something the test's own
+    assertion string had to match exactly. Also re-confirmed live against the real backend with a
+    fresh throwaway test account (residência → tarifa → aparelho) that `GET /dashboard/`'s
+    `gastos_mensais` really does come back shaped `{ano, mes, consumo_kwh, custo, origem}` for a
+    `"simulada"` month exactly as read from `dashboard_energia_repository.py` — the `"real"` branch
+    (`custo` = `Fatura.valor_total`) was confirmed by reading that same already-live-tested code path
+    rather than re-uploading a bill, since it's the identical query this session already verified
+    live for the cards/historico/metas badges.
+  - **Follow-up, same chart**: a `"simulada"` bar's X-axis label now shows the month *after* its
+    real `mes` (`rotuloMes()` in `renderizarGraficoGastos()`, `(item.mes % 12) + 1` wrapping
+    December→January) — explicit user call-out: a Brazilian fatura's `mes` is its consumption
+    *reference* month (see `enviar_fatura.js`'s `referencia` parsing), but the bill itself only
+    arrives the month after that reference month closes. So a value still labeled `"simulada"`
+    today (no real fatura for it yet) is, in practice, a preview of *next* month's incoming bill,
+    not a closed number for the current one — e.g. today being July, a simulated July data point is
+    shown under "Ago" instead, and July's own slot shows nothing until July's real fatura actually
+    arrives. **Deliberately display-only, inside this one chart function** — does *not* touch
+    `agregados_reais_e_simulados()`, `evolucao_mensal()`, or the `itens` array itself, since that
+    repository method is the shared source-of-truth `cards()`, `historico.js`, and the Meta
+    projection all key off too; shifting the actual `(ano, mes)` there would ripple into all of
+    those and risks a real collision (a shifted month landing on the key that month's *own* later
+    real/simulated entry would occupy) for the sake of one chart's label. `"real"` items are never
+    shifted — only a fatura's own true reference month is ever displayed for it. Confirmed via
+    AskUserQuestion before implementing, since a wrong shift direction here would make the chart
+    actively misleading rather than just incomplete. Verified with jsdom: a `mes=5` "simulada" item
+    labels as "Jun", a same-month "real" item stays unshifted, and a `mes=12` "simulada" item
+    correctly wraps to "Jan" (year boundary) while a `mes=12` "real" item stays "Dez".
+- **Resolved**: `dashboard.html`'s "Evolução Mensal" chart (`renderizarGraficoEvolucao()`, a
+  *different* chart/function from "Gastos Mensais" above — this one's the kWh line chart near the
+  top of the dashboard) had a second dataset, "Média" (the dashed blue line), that was 100%
+  fabricated: `i.consumo_kwh * (0.8 + Math.random() * 0.4)` — a fresh random multiplier on *every*
+  render, so the line visibly reshuffled itself on every single page reload. User noticed this
+  directly ("toda vez que atualizo a página, ele muda os dados") and correctly suspected it wasn't
+  reading from real data — same bug class as the already-fixed fake `"-12%"` trend and fake
+  `"15% menor que a média regional"` insight earlier in this file, just never caught in this
+  specific chart. The green "Consumo" line was never affected — that one's always been the real
+  `consumo_kwh` from `evolucao_mensal()`, same source as everything else on this page.
+  - Replaced with a real trailing 3-month moving average of the series' own `consumo_kwh` values
+    (`itens.slice(Math.max(0, indice - 2), indice + 1)`, averaged) — there's no regional/external
+    benchmark data source anywhere in this codebase (same conclusion already reached once for the
+    coverage insight), so a comparison against the user's *own* recent history is the honest option,
+    not an invented external one. The first 1–2 points in the window (not enough prior months yet)
+    average over however many exist rather than being left undefined. Fully deterministic — the
+    line no longer changes between reloads with the same underlying data, which was the actual
+    complaint.
+  - Verified with jsdom against the real `dashboard.js`: calling `renderizarGraficoEvolucao()` twice
+    with identical input now produces byte-identical output (the direct regression test for "changes
+    on every refresh"), the moving-average values themselves checked by hand for a 4-point series
+    (including the windowing at the start and the slide once 3 prior points exist), and confirmed
+    the "Consumo" dataset and chart labels are untouched by this change.
+- **New**: the 4 top KPI cards on `dashboard.html` (Consumo Mensal, Custo Est., Potencial de
+  Economia, Meta Mensal) got a visual + explanatory pass, per explicit user scoping ("visual +
+  explicações", not a silent full redesign) — user picked this over "só visual" and "você decide".
+  - **`campoComInfoHtml()`/`alternarInfoCampo()` moved from `historico.js` to `js/ui.js`** — same
+    reasoning as `alternarFaq`'s earlier move (see that bullet): a second page now needs the same
+    "label + (i) button → inline explanation on click" pattern, so it belongs in the shared file, not
+    duplicated. `historico.js`'s own call sites (`campoComInfoHtml(...)` used when rendering fatura
+    detail fields) are untouched — only the *definition* moved, confirmed no leftover duplicate.
+    Since `js/ui.js` is already confirmed loaded before every page-specific script (see the
+    `alternarFaq`/cookie-modal bullets above), no page needed a new `<script>` tag for this.
+  - Each of the 4 cards' `.card-title` is now wrapped in a `.campo-info-wrapper` with a small (i)
+    button; clicking reveals one honest, backend-grounded sentence per metric (not generic copy):
+    Consumo Mensal/Custo Est. explain the real-fatura-vs-calculated-estimate origin (same logic as
+    the `vencimento` field already on the Custo Est. card); Potencial de Economia
+    explains it's a sum of `Recomendacao.economia_valor_potencial` across *every* recommendation ever
+    generated for the account (`dashboard_energia_repository.py::cards()`) — confirmed via reading
+    `app/models/recomendacao.py` that there's no status/dismissed field, so summing all of them is
+    correct, not a bug; Meta Mensal explains the bar is a *projection at current pace* vs. the
+    user's `teto_kwh`, not consumption-so-far — worth spelling out since `preencherMetaMensal()`'s
+    math (`projecao_mensal_kwh / teto_kwh`) genuinely isn't what a progress bar usually implies.
+  - `.card-title` gained `display:flex; align-items:center; gap:4px` (additive — a no-op for any
+    other page's plain-text `.card-title`, only dashboard.html's page-scoped `<style>` block is
+    affected) so the (i) button sits inline with the label instead of wrapping.
+  - `.card-fundo-verde` (the solid-green "Potencial de Economia" card) needed explicit `.btn-info`/
+    `.texto-info-campo` color overrides — both default to colors meant for a light surface
+    (`--on-surface-variant` icon, `--surface-container` box), which would be near-invisible on a
+    solid `--primary` green fill without this.
+  - `.card-borda-azul` ("Custo Est.") gained a `background: var(--surface-container-highest)` wash
+    alongside its existing left-border accent — reuses the exact token (`#dae2fd`) already used this
+    session for the "estimado" bar color in the Gastos Mensais chart, so the light-blue = cost/estimate
+    association reads consistently in both places rather than being a one-off.
+  - Meta Mensal gained a small `.icone-meta` (target icon, 3 concentric circles) — the one card among
+    the 4 with no icon/badge/color accent of its own before this; the other three already had a
+    badge, a border+tint, or a full color fill respectively, so this was a real asymmetry, not
+    decoration for its own sake. Consumo Mensal/Custo Est. deliberately did *not* get an extra
+    decorative icon on top of their existing badge/border — a compact 2-up mobile grid card already
+    has a badge or accent plus now an (i) button; a third simultaneous marker risked crowding a card
+    that's roughly half a ~360–390px-wide phone screen.
+  - **Found while reading `historico.js` for this, unrelated to the cards**: it defines its own
+    top-of-file `formatarMoeda(valor)` that returns just `"245,30"` (no `"R$"`, via
+    `Number(valor).toLocaleString('pt-BR', {minimumFractionDigits:2,...})`) — a *different* function
+    from `js/ui.js`'s `formatarMoeda` (`"R$ 245,30"`, via `toLocaleString(..., {style:"currency",...})`).
+    Same global name, different behavior; `historico.js` loading after `ui.js` means historico.html's
+    page context silently uses the local one everywhere on that page. Not touched — no bug was
+    reported against it and this session didn't audit what `historico.js`'s specific rendering calls
+    actually depend on that number-only shape — but worth knowing before ever moving more shared code
+    near this name, since assuming `ui.js`'s `formatarMoeda` behavior on `historico.html` would be
+    wrong.
+  - Verified with jsdom against the real `dashboard.html`/`dashboard.js`/`ui.js`/`historico.js`: all
+    4 `.campo-info-wrapper`s present with the right title text and non-trivial explanation text: the
+    info-toggle click/re-click cycle correctly flips `.visivel` and `aria-expanded` using the
+    *shared* `ui.js` function; every ID `preencherCards()`/`preencherMetaMensal()` depend on
+    (`card-valor-estimado`, `card-vencimento`, `barra-meta-fill`, etc.) still
+    exists and still gets populated correctly end-to-end; `historico.js` no longer defines either
+    function (confirmed zero matches) but still calls `campoComInfoHtml` and correctly resolves it
+    from `ui.js`; and the CSS block is brace-balanced. Also re-ran the existing mobile-gate jsdom
+    suite as a regression check since it shares `js/ui.js` with this change — still 11/11 passing.
+    Confirmed all touched files (`dashboard.html`, `js/ui.js`, `js/paginas/historico.js`) serve
+    correctly over real HTTP via Apache. As with the earlier index.html visual pass, none of this was
+    confirmed in an actual rendered browser — no screenshot/browser-automation tool is available in
+    this environment — so a real look is still owed before calling the visual result final.
+  - **Follow-up, same pass**: the `badge-origem-mes` "Fatura real"/"Estimado" badge (top-right of the
+    Consumo Mensal card) was removed at the user's explicit request — the real/estimado distinction
+    for that card now lives *only* in its (i) button's explanation text (added in the bullet above),
+    not as a separate always-visible badge. Removed the `<span id="badge-origem-mes">` element,
+    unwrapped the now-single-child `.flex.justify-between.items-start` div it used to share with the
+    title (no longer needed with nothing to justify-between), and deleted `preencherCards()`'s badge
+    population branch in `dashboard.js` — the shared `.badge-status-analisada`/`.badge-status-processamento`
+    classes themselves were *not* touched, since `historico.js`'s own per-item badges still use them.
+    Re-verified with jsdom: `preencherCards()` no longer throws with the badge absent from the DOM
+    (confirmed via try/catch around the call, not just that a stale check silently passed), and
+    confirmed zero remaining references to `badge-origem-mes` in both the served HTML and JS.
+- **Resolved**: `insights.html`/`js/paginas/insights.js` (the 5th bottom-nav tab, "Insights" —
+  `partials/bottom-nav.html`, real and reachable, not orphaned) was badly broken — not just "shows
+  placeholder data" but had several genuine response-shape bugs that made it show fabricated numbers
+  *unconditionally*, regardless of what real data existed:
+  - `apiGet("/recomendacoes/")` returns a **plain array** (confirmed both by reading
+    `recomendacao_router.py::listar()` and live against a real account), but the old code read
+    `res.recomendacoes` — always `undefined` → always fell through to 2 hardcoded fake recommendations
+    ("Evite alto consumo entre 18h e 21h...", "Sua geladeira antiga gasta 3x mais..."), *even when
+    real recommendations existed*. The same bug independently broke "Economia Estimada": `total`
+    always stayed `0` → always fell back to a hardcoded `R$ 42,30`, which then fed a fabricated
+    `total * 0.3` "kg of CO2 offset" claim with no real emissions-factor source anywhere in this
+    codebase (same category of problem as the already-fixed fake trend/meta/regional-average values
+    on the dashboard, just never caught here). The CO2 line was removed outright rather than
+    replaced with a differently-fake number — there's no established, sourced kWh→CO2 factor in this
+    project to compute a real one, and `recomendacoes.js` (the actual Recomendações page) never made
+    this claim either.
+  - `apiGet("/assinaturas/minha-assinatura")` returns the plan object directly with a nested
+    `.plano.tipo` field (confirmed live: `{id, plano: {tipo: "FREE", ...}, status, ...}`), but the
+    old code read `res.assinatura.nome` — always `undefined` → `isFree` was **always `true`**,
+    meaning the "Limite do Plano Grátis" banner and "Seja Premium" upsell card would show even to a
+    paying Premium account. Fixed to mirror the already-established, working pattern from
+    `aparelhos.js::obterLimiteAparelhos()`: `assinatura.plano?.tipo === "FREE"`.
+  - Recommendation cards used a nonexistent `rec.tipo_sugerido`/`rec.icone_tipo` and guessed the
+    category by string-matching `descricao` for the word "upgrade" — replaced with the real `rec.tipo`
+    field (`economia_personalizada` | `troca_equipamento` | `ranking_consumo`, confirmed against
+    `app/models/recomendacao.py` and live-generated recommendations) mapped through
+    `ROTULOS_RECOMENDACAO`, the exact lookup table `recomendacoes.js` already used correctly — **moved
+    to `js/ui.js`** (same reasoning as `alternarFaq`/`campoComInfoHtml`'s earlier moves: a second page
+    now needs it) rather than duplicated, and `recomendacoes.js`'s own copy deleted.
+  - `/metas/minha-meta`'s shape (`orcamento_reais`, `projecao_mensal_reais`, `teto_kwh`,
+    `projecao_mensal_kwh`) was actually already correct in the old code — its router docstring in
+    `meta_router.py` says outright this endpoint was purpose-built for this exact Insights card. Only
+    polish here: the "no meta yet" state used to show fake `"R$ 0,00"`/`"0 kWh"`/`"0%"` numbers
+    instead of an honest "Sem meta" — fixed to match `dashboard.js::preencherMetaMensal()`'s existing
+    "Sem meta cadastrada" convention.
+  - The "Mensal"/"Anual" tab toggle above the history chart had **no click handler at all** — pure
+    decoration, "Anual" did nothing. Wired up (`alternarModoHistorico()`), aggregating the *same*
+    already-fetched `historico` array client-side by `ano` (no new endpoint — `/dashboard/energia/historico`
+    has no month-count/granularity parameter to begin with). Required calling `.destroy()` on the
+    previous Chart.js instance before creating a new one on tab switch — same "Canvas is already in
+    use" hazard already anticipated (but never actually triggered, since nothing before this
+    re-rendered onto a live canvas) in this file's dashboard-chart bullets earlier in this doc. The
+    active-tab visual state was *also* dead — the "active" look was hardcoded as inline styles on the
+    "Mensal" button specifically, not driven by the `.ativa` class the toggle logic sets, so a
+    `classList` toggle alone wouldn't have changed anything visually; added a page-scoped
+    `.abas .aba.ativa` CSS rule (overriding the shared, differently-styled `.aba.ativa` from
+    `componentes.css`, which is a plain underlined-tab style — this page uses a pill/segmented-control
+    look) and removed the inline styles so the class toggle actually drives the look.
+  - **Found while fixing this, unrelated**: every `.innerText` assignment in this file (13 of them)
+    was switched to `.textContent` — functionally equivalent here (none of these needed
+    `.innerText`'s CSS-aware "rendered text" semantics, they're all plain string-into-element cases)
+    and consistent with `.textContent` already being the convention `dashboard.js`/`historico.js` use.
+    Motivated by a real jsdom gotcha hit while verifying this fix: jsdom's `.innerText` setter doesn't
+    sync with `.textContent` at all (confirmed in isolation — setting one leaves the other
+    completely unchanged), so anything written with `.innerText` was silently unverifiable with this
+    project's established jsdom-based testing approach, not just for this session but for good.
+  - **Verification, in order**: (1) read every consumed endpoint's actual router/schema code
+    (`recomendacao_router.py`, `assinatura_router.py`, `meta_router.py`,
+    `dashboard_energia_repository.py::historico_mensal_agregado`) to know the real shapes before
+    writing any fix, rather than guessing from the broken code's assumptions; (2) hit every one of
+    those endpoints live against a fresh throwaway account (empty-state and then populated with a
+    real residência/aparelho/recomendação/duas metas) to confirm the shapes match what was just read
+    — caught nothing new here, but this is the exact step that caught the `meta_router.py` bug
+    earlier in this project, so it wasn't skipped; (3) a full jsdom pass using those *exact* captured
+    real payloads as fixtures (not invented ones) driving the real `insights.html`/`insights.js`/
+    `ui.js`, covering: FREE vs. PREMIUM plan detection, populated vs. empty recommendations, the
+    "always-fake-42,30" regression specifically, chronological history ordering, the new Anual
+    aggregation and its `.destroy()` call, active-tab class toggling, and both meta states — 34/34
+    passing. One test-harness-only gotcha hit and worked around, not a bug in the shipped code: jsdom
+    doesn't share top-level `const`/`let` bindings (`NOMES_MES`, `ROTULOS_RECOMENDACAO`) across
+    *separate* `window.eval()` calls the way real `<script>` tags in one document actually do — fixed
+    by re-stubbing those two constants directly in the test harness, confirmed in isolation first
+    before assuming it was the cause. Also confirmed all touched files serve correctly over real
+    HTTP via Apache.
 - Super Admin panel (`../DESIGN-DESKTOP.MD`) not started — explicitly deferred to a separate pass.
 - Stripe checkout, real SMTP, and Google OAuth are all still unconfigured in `../api.energycalc.com.br/backend/.env` — the
   frontend already degrades gracefully for all three (clear toasts/503 messages), nothing to fix

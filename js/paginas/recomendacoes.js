@@ -1,9 +1,4 @@
-const ROTULOS_RECOMENDACAO = {
-  economia_personalizada: "Economia personalizada",
-  troca_equipamento: "Troca de equipamento",
-  ranking_consumo: "Maior consumidor",
-};
-
+// ROTULOS_RECOMENDACAO mora em js/ui.js — insights.js também precisa dela.
 function inicializarRecomendacoes() {
   carregarRecomendacoes();
 }

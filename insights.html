@@ -14,6 +14,18 @@
   <link rel="stylesheet" href="css/layout.css" />
   <style>
     .chart-wrap { position: relative; height: 180px; }
+
+    /* .aba.ativa (componentes.css) é feito pra uma tira de abas sublinhada
+       — essa aqui é uma pílula (fundo cinza claro, botões arredondados),
+       então a variante ativa precisa de outro tratamento visual, só nesta
+       página. */
+    .abas .aba.ativa {
+      background: var(--surface-container-lowest);
+      color: var(--primary);
+      font-weight: 700;
+      box-shadow: var(--shadow-1);
+      border-radius: var(--radius-full);
+    }
   </style>
 </head>
 <body>
@@ -42,8 +54,8 @@
         <h2 class="label-md" style="font-size: 20px; font-weight: 700;">Histórico de Consumo</h2>
         <div class="flex items-center gap-sm">
           <div class="abas" style="margin-bottom: 0; border: none; background: var(--surface-container-low); border-radius: var(--radius-full); padding: 4px;">
-            <button class="aba ativa" style="padding: 4px 12px; border-radius: var(--radius-full); font-size: 12px; border: none; background: var(--surface-container-lowest); color: var(--primary); font-weight: 700; box-shadow: var(--shadow-1);">Mensal</button>
-            <button class="aba" style="padding: 4px 12px; border-radius: var(--radius-full); font-size: 12px; border: none;">Anual</button>
+            <button type="button" class="aba ativa" onclick="alternarModoHistorico('mensal', this)" style="padding: 4px 12px; border-radius: var(--radius-full); font-size: 12px; border: none;">Mensal</button>
+            <button type="button" class="aba" onclick="alternarModoHistorico('anual', this)" style="padding: 4px 12px; border-radius: var(--radius-full); font-size: 12px; border: none;">Anual</button>
           </div>
           <button class="btn-icone" style="width: 32px; height: 32px;">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" /></svg>
@@ -113,9 +125,6 @@
           <span class="headline-md" style="color: var(--primary);" id="economia-estimada-valor">R$ --,--</span>
           <p class="caption texto-secundario">economia potencial este mês</p>
         </div>
-      </div>
-      <div style="background: var(--surface-container-low); padding: var(--space-sm) var(--space-md); border-radius: var(--radius-default);">
-        <p class="caption">Com base nos seus ajustes recentes, você está no caminho certo para economizar o suficiente para compensar <strong id="economia-emissoes">--kg</strong> de emissões de CO2.</p>
       </div>
     </div>
 

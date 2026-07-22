@@ -213,9 +213,49 @@ function alternarFaq(botao) {
   botao.parentElement.classList.toggle("aberto");
 }
 
+// Rótulo (fatura em historico.js, título de card em dashboard.js...) +
+// botão de info que revela uma explicação curta em texto simples — inline,
+// não popover flutuante: o painel de "Ver detalhes" de historico.js tem
+// overflow:hidden (necessário pra animação de abrir/fechar) e cortaria
+// qualquer coisa posicionada por fora. Movida pra cá (de historico.js)
+// quando dashboard.js passou a precisar do mesmo padrão nos cards do topo
+// — mesmo motivo de alternarFaq estar aqui em vez de em landing.js.
+function campoComInfoHtml(rotulo, explicacao) {
+  return `
+    <div class="campo-info-wrapper">
+      <p class="caption texto-secundario campo-label-info">
+        ${rotulo}
+        <button type="button" class="btn-info" onclick="alternarInfoCampo(this)" aria-label="O que é ${rotulo}?" aria-expanded="false">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        </button>
+      </p>
+      <p class="texto-info-campo">${explicacao}</p>
+    </div>`;
+}
+
+function alternarInfoCampo(botao) {
+  const wrapper = botao.closest(".campo-info-wrapper");
+  const texto = wrapper && wrapper.querySelector(".texto-info-campo");
+  if (!texto) return;
+
+  const visivel = texto.classList.toggle("visivel");
+  botao.setAttribute("aria-expanded", visivel ? "true" : "false");
+}
+
 function formatarKwh(valor) {
   return `${(valor ?? 0).toLocaleString("pt-BR", { maximumFractionDigits: 2 })} kWh`;
 }
+
+// Rótulo amigável por `tipo` de Recomendacao — mesmos 3 valores que o
+// backend gera (recomendacao_service.py): economia_personalizada |
+// troca_equipamento | ranking_consumo. Movido de recomendacoes.js pra cá
+// quando insights.js passou a precisar do mesmo mapeamento (mesmo motivo
+// de alternarFaq/campoComInfoHtml estarem aqui).
+const ROTULOS_RECOMENDACAO = {
+  economia_personalizada: "Economia personalizada",
+  troca_equipamento: "Troca de equipamento",
+  ranking_consumo: "Maior consumidor",
+};
 
 const NOMES_MES = [
   "Jan", "Fev", "Mar", "Abr", "Mai", "Jun",

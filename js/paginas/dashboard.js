@@ -74,23 +74,11 @@ async function inicializarDashboard() {
 }
 
 function preencherCards(cards) {
-  // Consumo Mensal
+  // Consumo Mensal — a distinção real/estimado (mesma origem dos badges de
+  // fatura no histórico) fica só na explicação do botão (i) do título; ver
+  // agregados_reais_e_simulados no backend.
   const consumoKwh = cards.consumo_mensal_kwh || 0;
   document.getElementById("card-consumo-mensal").innerHTML = `${consumoKwh} <span class="unidade">kWh</span>`;
-
-  // Mesma distinção real/estimado que os badges de fatura no histórico —
-  // esse número vem da Fatura enviada quando existe uma pro mês, senão do
-  // cálculo a partir dos aparelhos (ver agregados_reais_e_simulados).
-  const badgeOrigem = document.getElementById("badge-origem-mes");
-  if (cards.origem_mes_atual === "real") {
-    badgeOrigem.textContent = "Fatura real";
-    badgeOrigem.className = "badge-status-analisada";
-    badgeOrigem.style.display = "";
-  } else {
-    badgeOrigem.textContent = "Estimado";
-    badgeOrigem.className = "badge-status-processamento";
-    badgeOrigem.style.display = "";
-  }
 
   // Valor Estimado
   document.getElementById("card-valor-estimado").textContent = formatarMoeda(cards.valor_estimado || 0);
@@ -265,8 +253,20 @@ function renderizarGraficoEvolucao(itens) {
     return;
   }
   
-  // Simulando dataset de média
-  const dadosMedia = itens.map(i => i.consumo_kwh * (0.8 + Math.random() * 0.4));
+  // Média móvel dos últimos 3 meses (incluindo o mês do próprio ponto) —
+  // não existe nenhuma fonte de "média regional"/benchmark externo nesse
+  // projeto (mesmo motivo já documentado no insight de cobertura do
+  // dashboard), então a comparação honesta é contra o histórico do próprio
+  // usuário. Pros primeiros pontos da janela, sem 3 meses anteriores
+  // completos ainda, usa a média do que existir até ali em vez de deixar
+  // undefined. Antes disso era `consumo_kwh * (0.8 + Math.random() * 0.4)`
+  // — um valor recalculado (e diferente) a cada render, por isso a linha
+  // "mudava sozinha" a cada refresh da página.
+  const dadosMedia = itens.map((_, indice) => {
+    const janela = itens.slice(Math.max(0, indice - 2), indice + 1);
+    const soma = janela.reduce((total, item) => total + item.consumo_kwh, 0);
+    return soma / janela.length;
+  });
   
   new Chart(document.getElementById("grafico-evolucao"), {
     type: "line",
@@ -305,16 +305,33 @@ function renderizarGraficoGastos(itens) {
     document.getElementById("vazio-gastos").style.display = "block";
     return;
   }
-  
+
+  // Cor por origem (mesmo dado que os badges "Fatura real"/"Estimado" já
+  // usam em outras partes do dashboard/histórico — ver
+  // agregados_reais_e_simulados no backend): fatura real em azul cheio,
+  // valor calculado a partir dos aparelhos num azul claro.
+  //
+  // Um item "simulada" é rotulado com o mês SEGUINTE ao seu `mes` real —
+  // a fatura que confirma (ou substitui) esse valor só chega no mês que
+  // vem (referência de Julho só é faturada em Agosto — ver `referencia`
+  // extraído no upload, enviar_fatura.js), então a estimativa calculada
+  // agora é, na prática, uma prévia da fatura do próximo mês, não um
+  // número fechado pro mês corrente. Só afeta o rótulo deste gráfico —
+  // não mexe em `agregados_reais_e_simulados` nem em `itens` (chave real
+  // usada por cards, histórico e projeção de Meta continua íntegra).
+  const rotuloMes = (item) => {
+    const mes = item.origem === "simulada" ? (item.mes % 12) + 1 : item.mes;
+    return NOMES_MES[mes - 1];
+  };
+
   new Chart(document.getElementById("grafico-gastos"), {
     type: "bar",
     data: {
-      labels: itens.map((i) => `${NOMES_MES[i.mes - 1]}`),
+      labels: itens.map(rotuloMes),
       datasets: [
         {
           data: itens.map((i) => i.custo),
-          // Destacar o último mês
-          backgroundColor: itens.map((_, i) => i === itens.length - 1 ? "#dae2fd" : "transparent"),
+          backgroundColor: itens.map((i) => i.origem === "real" ? COR_AZUL : "#dae2fd"),
           borderRadius: 4,
           maxBarThickness: 40,
         },
@@ -322,6 +339,18 @@ function renderizarGraficoGastos(itens) {
     },
     options: {
       ...OPCOES_BASE,
+      plugins: {
+        ...OPCOES_BASE.plugins,
+        tooltip: {
+          callbacks: {
+            label: (contexto) => {
+              const item = itens[contexto.dataIndex];
+              const origemTexto = item.origem === "real" ? "Fatura real" : "Estimado";
+              return `${formatarMoeda(item.custo)} — ${origemTexto}`;
+            },
+          },
+        },
+      },
       scales: {
         x: { grid: { display: false }, ticks: { color: "#3e4a3d", font: { weight: (ctx) => ctx.index === itens.length - 1 ? 'bold' : 'normal' } } },
         y: { display: false, beginAtZero: true } // Esconder eixo Y como no mockup

@@ -40,31 +40,10 @@ function alternarDadoSensivel(botao) {
   botao.querySelector('.icone-olho-fechado').style.display = revelado ? '' : 'none';
 }
 
-// Rótulo técnico da fatura (UC, TUSD, ICMS...) + botão de info que revela
-// uma explicação curta em texto simples — inline, não popover flutuante,
-// porque o painel de "Ver detalhes" tem overflow:hidden (necessário pra
-// animação de abrir/fechar) e cortaria qualquer coisa posicionada por fora.
-function campoComInfoHtml(rotulo, explicacao) {
-  return `
-    <div class="campo-info-wrapper">
-      <p class="caption texto-secundario campo-label-info">
-        ${rotulo}
-        <button type="button" class="btn-info" onclick="alternarInfoCampo(this)" aria-label="O que é ${rotulo}?" aria-expanded="false">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-        </button>
-      </p>
-      <p class="texto-info-campo">${explicacao}</p>
-    </div>`;
-}
-
-function alternarInfoCampo(botao) {
-  const wrapper = botao.closest(".campo-info-wrapper");
-  const texto = wrapper && wrapper.querySelector(".texto-info-campo");
-  if (!texto) return;
-
-  const visivel = texto.classList.toggle("visivel");
-  botao.setAttribute("aria-expanded", visivel ? "true" : "false");
-}
+// campoComInfoHtml()/alternarInfoCampo() moraram aqui até o dashboard
+// precisar do mesmo padrão nos cards do topo — movidas pra js/ui.js
+// (mesmo motivo de alternarFaq ter ido pra lá: 2 páginas precisando da
+// mesma função, ver CLAUDE.md).
 
 async function inicializarHistorico() {
   exigirLogin();
