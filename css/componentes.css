@@ -1894,3 +1894,36 @@ input[type="range"]::-moz-range-thumb {
   align-items: flex-end;
   padding: var(--space-md);
 }
+
+/* Bloqueio de acesso fora de celular (ver ui.js::verificarDispositivoMovel).
+   z-index acima de qualquer modal (100) e do banner offline (9999, ver
+   ui.js::mostrarBannerOffline) — se as duas coisas coincidirem, bloquear o
+   acesso é a prioridade. */
+#bloqueio-desktop {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-xl);
+}
+
+#bloqueio-desktop.bloqueio-desktop-escondido {
+  display: none;
+}
+
+.bloqueio-desktop-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-full);
+  background: #e8f5e9;
+  color: var(--primary);
+  margin-bottom: var(--space-lg);
+}

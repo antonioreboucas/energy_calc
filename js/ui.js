@@ -147,6 +147,36 @@ function inicializarBannerCookies() {
 
 inicializarBannerCookies();
 
+const LARGURA_MAXIMA_MOBILE = 768;
+
+const HTML_BLOQUEIO_DESKTOP = `
+<div id="bloqueio-desktop" class="bloqueio-desktop-escondido">
+  <div class="bloqueio-desktop-icone">
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2" /><path d="M12 18h.01" /></svg>
+  </div>
+  <h1 class="headline-md mb-sm">Acesse pelo celular</h1>
+  <p class="body-md texto-secundario" style="max-width: 400px;">O EnergyCalc foi feito sob medida pra uso em smartphones. Abra este mesmo endereço no seu celular pra continuar.</p>
+</div>`;
+
+// Bloqueia o site inteiro fora de telas de celular — cobre tela toda,
+// sem botão de fechar (não é dispensável, ao contrário dos outros modais
+// deste arquivo). Usa min(largura, altura) em vez de só innerWidth: um
+// celular em paisagem tem innerWidth maior que o limite, mas continua
+// sendo um celular — sem o min(), giraria a tela e seria bloqueado à toa.
+// Reavalia a cada resize (não só uma vez no load) pra cobrir quem
+// redimensiona a janela ou gira o dispositivo depois da página já aberta.
+function verificarDispositivoMovel() {
+  if (!document.getElementById("bloqueio-desktop")) {
+    document.body.insertAdjacentHTML("beforeend", HTML_BLOQUEIO_DESKTOP);
+  }
+  const overlay = document.getElementById("bloqueio-desktop");
+  const ehMobile = Math.min(window.innerWidth, window.innerHeight) <= LARGURA_MAXIMA_MOBILE;
+  overlay.classList.toggle("bloqueio-desktop-escondido", ehMobile);
+}
+
+verificarDispositivoMovel();
+window.addEventListener("resize", verificarDispositivoMovel);
+
 // Chame em todo catch(erro) de chamada de API — decide sozinho entre modal
 // de upgrade (limite_free/upgrade_necessario) e toast de erro genérico.
 function tratarErroApi(erro) {

@@ -597,6 +597,49 @@ frontend/app/
     through their real `.js` files against mocked — and, for the backend calls, real — API
     responses. Every new route double-checked live over HTTP (`router.php` needs no registration,
     but worth confirming after adding 5 files at once instead of one).
+- **New**: the entire site is now gated to mobile-sized screens only (`js/ui.js`'s
+  `verificarDispositivoMovel()`/`HTML_BLOQUEIO_DESKTOP`, `#bloqueio-desktop` in `componentes.css`) —
+  explicit user request: no exceptions for the landing page, a full-screen blocking overlay (not a
+  banner/toast), detected by screen width. `LARGURA_MAXIMA_MOBILE = 768` (the common tablet
+  breakpoint); anything at or under that is let through, anything wider sees only the block screen
+  (icon + "Acesse pelo celular" + explanation, no app content, no way to dismiss).
+  - Uses `Math.min(window.innerWidth, window.innerHeight)`, not bare `innerWidth` — a phone in
+    landscape has an `innerWidth` well past 768, but it's still a phone; taking the smaller of the
+    two dimensions means rotating a real mobile device never triggers a false block. Verified this
+    specifically: an 844×390 landscape phone viewport correctly stays unblocked
+    (`min(844,390)=390 ≤ 768`).
+  - Re-evaluates on every `resize` event, not just once at load, so someone who resizes a desktop
+    browser window or rotates a device after the page is already open gets re-checked live, in
+    either direction (shrinking into the mobile range unblocks; growing back out re-blocks).
+  - `z-index: 10000` — deliberately above both `.modal-overlay` (100) and the offline banner (9999,
+    `mostrarBannerOffline()`). If a desktop visitor would otherwise see the cookie-consent modal or
+    the offline banner, the mobile block wins and covers it; there's nothing useful either of those
+    can accomplish on a screen that's about to be told to come back on a phone.
+  - **The one modal/overlay in this file with no dismiss path at all** — no X button, no
+    backdrop-click-to-close, unlike every other `.modal-overlay` usage in `ui.js`. Deliberate per the
+    request: this isn't a dismissable notice, it's meant to fully block use on disallowed screen
+    sizes.
+  - Auto-runs the moment `js/ui.js` loads (`verificarDispositivoMovel()` is called unconditionally at
+    the bottom of the file, plus the `resize` listener), same self-injecting pattern and same
+    reasoning as `inicializarBannerCookies()` right above it — confirmed present on all 19 top-level
+    `.html` pages already, so hooking it here guarantees site-wide coverage with zero per-page edits
+    and zero risk of missing one.
+  - **Known, accepted limitation**: screen width is the only signal used (per the user's explicit
+    choice of detection method over any user-agent sniffing alternative), so a desktop browser window
+    manually resized narrow enough (≤768px wide and tall) reads as "mobile" and is let through — there's
+    no way to distinguish that from a real small device using width alone. Confirmed in testing
+    (a 700×900 resized-desktop-window case passes as unblocked) and left as-is; revisit with UA-based
+    detection only if this specific gap ever turns out to matter in practice.
+  - Verified with a jsdom suite driving the real `ui.js` file across iPhone portrait/landscape, iPad
+    Mini portrait/landscape (768 is exactly the boundary — confirmed inclusive, i.e. counted as
+    mobile), desktop, a small notebook resolution, the narrow-resized-window edge case above, dynamic
+    resize in both directions, and repeated-call duplicate-overlay prevention — all passing. One
+    harness-only gotcha hit and fixed along the way, not a bug in the shipped code: `JSDOM` instances
+    created without a `url` option get an opaque document origin, and jsdom throws a `DOMException`
+    the moment *anything* touches `window.localStorage` under that condition (thrown from inside
+    jsdom's own `Window.js`, before any app code runs) — fixed by passing `url: "http://localhost/"`
+    to the `JSDOM` constructor in the test file. Also confirmed served correctly over real HTTP via
+    Apache (`curl` for both `js/ui.js` and `css/componentes.css`, 200 + new content present in both).
 - Super Admin panel (`../DESIGN-DESKTOP.MD`) not started — explicitly deferred to a separate pass.
 - Stripe checkout, real SMTP, and Google OAuth are all still unconfigured in `../api.energycalc.com.br/backend/.env` — the
   frontend already degrades gracefully for all three (clear toasts/503 messages), nothing to fix
